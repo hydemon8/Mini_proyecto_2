@@ -62,7 +62,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Análisis Exploratorio de Datos" href="notebooks/eda.html" />
+    <link rel="next" title="Análisis Exploratorio de Datos" href="01_eda.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,7 +183,7 @@
             </li>
         </ul>
         <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html"><strong>Análisis Exploratorio de Datos</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html"><strong>Análisis Exploratorio de Datos</strong></a></li>
 
 
 
@@ -385,12 +385,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo"><em>Objetivo</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo">Flujo de trabajo</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-del-modelo">Extensión del modelo</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto"><em>Contexto</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-metodologico">Enfoque metodológico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo">Flujo de trabajo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-financiero">Contexto financiero</a></li>
 </ul>
             </nav>
         </div>
@@ -403,48 +401,61 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="introduccion">
-<h1><strong>Introducción</strong><a class="headerlink" href="#introduccion" title="Link to this heading">#</a></h1>
-<section id="objetivo">
-<h2><em>Objetivo</em><a class="headerlink" href="#objetivo" title="Link to this heading">#</a></h2>
-<p>Este proyecto tiene como propósito desarrollar un sistema de <strong>predicción para el precio de cierre diario de Bitcoin</strong>, utilizando exclusivamente su histórico temporal.</p>
-<p>La metodología se basa en la aplicación de <strong>ingeniería de retardos (lags)</strong>, validación temporal mediante <strong>TimeSeriesSplit</strong>, y el entrenamiento de una <strong>red neuronal MLP (Multilayer Perceptron)</strong> para modelar tanto el <strong>precio</strong> como la <strong>volatilidad</strong> del activo.</p>
+<h1>Introducción<a class="headerlink" href="#introduccion" title="Link to this heading">#</a></h1>
+<section id="objetivo-general">
+<h2>Objetivo general<a class="headerlink" href="#objetivo-general" title="Link to this heading">#</a></h2>
+<p>Este proyecto tiene como propósito desarrollar un sistema de predicción multisalida para el mercado de Bitcoin, abordando dos tareas complementarias:</p>
+<ol class="arabic simple">
+<li><p><strong>Predicción del precio de cierre diario</strong> en horizontes de corto plazo.</p></li>
+<li><p><strong>Estimación de la volatilidad futura del precio</strong>, como indicador de riesgo.</p></li>
+</ol>
+<p>Ambos modelos se construyen exclusivamente a partir del histórico temporal de precios de cierre (<code class="docutils literal notranslate"><span class="pre">Close</span></code>), sin incorporar variables externas. Esto permite evaluar el poder predictivo de las transformaciones internas del propio activo, manteniendo un enfoque reproducible y realista.</p>
+</section>
+<hr class="docutils" />
+<section id="enfoque-metodologico">
+<h2>Enfoque metodológico<a class="headerlink" href="#enfoque-metodologico" title="Link to this heading">#</a></h2>
+<p>La estrategia se basa en:</p>
+<ul class="simple">
+<li><p>Aplicación de <strong>ingeniería de retardos (lags)</strong> y medias móviles como variables explicativas.</p></li>
+<li><p><strong>Validación temporal</strong> mediante particiones secuenciales (<code class="docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code>).</p></li>
+<li><p>Entrenamiento de <strong>redes neuronales MLP multisalida</strong>, adaptadas a series temporales.</p></li>
+<li><p><strong>Análisis riguroso de residuos</strong>, incluyendo pruebas de dependencia no lineal (BDS test).</p></li>
+<li><p>Preparación del modelo para su eventual <strong>despliegue en un entorno MLOps</strong> (API, contenedor, CI/CD).</p></li>
+</ul>
+</section>
+<hr class="docutils" />
 <section id="flujo-de-trabajo">
-<h3>Flujo de trabajo<a class="headerlink" href="#flujo-de-trabajo" title="Link to this heading">#</a></h3>
+<h2>Flujo de trabajo<a class="headerlink" href="#flujo-de-trabajo" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Exploración y cálculo de la <strong>volatilidad histórica</strong>.</p></li>
+<li><p>Generación de features temporales derivados de <code class="docutils literal notranslate"><span class="pre">Close</span></code>.</p></li>
+<li><p>Separación de conjuntos de entrenamiento para cada tarea (precio y volatilidad).</p></li>
+<li><p>Entrenamiento y evaluación de modelos independientes.</p></li>
+<li><p>Validación con métricas específicas por tipo de salida.</p></li>
+<li><p>Documentación reproducible y despliegue técnico.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="contexto-financiero">
+<h2>Contexto financiero<a class="headerlink" href="#contexto-financiero" title="Link to this heading">#</a></h2>
+<p>El mercado de Bitcoin se caracteriza por su <strong>alta volatilidad</strong>, lo que representa tanto una oportunidad como un desafío para traders, gestores de portafolio e investigadores financieros.</p>
+<p>Si bien la predicción del precio ha sido históricamente el foco de numerosos modelos, <strong>anticipar la volatilidad</strong> ofrece una ventaja estratégica más robusta en aplicaciones como:</p>
 <ul class="simple">
-<li><p>Medición y exploración de la <strong>volatilidad histórica</strong>.</p></li>
-<li><p>Generación de <strong>ventanas temporales (lags)</strong> como variables explicativas.</p></li>
-<li><p>Validación cruzada con <strong>particiones temporales</strong> (GroupKFold adaptado a series de tiempo).</p></li>
-<li><p>Evaluación con <strong>métricas específicas para series temporales</strong>.</p></li>
-<li><p>Análisis riguroso de <strong>residuos</strong>, incluyendo pruebas de dependencia no lineal.</p></li>
-<li><p>Preparación del modelo para su eventual <strong>despliegue en un entorno MLOps</strong>.</p></li>
+<li><p>Trading algorítmico</p></li>
+<li><p>Asignación dinámica de portafolios</p></li>
+<li><p>Estrategias de cobertura</p></li>
+<li><p>Estimación de riesgos extremos</p></li>
 </ul>
-</section>
-<section id="extension-del-modelo">
-<h3>Extensión del modelo<a class="headerlink" href="#extension-del-modelo" title="Link to this heading">#</a></h3>
-<p>Además del precio, se propone construir un modelo robusto para <strong>predecir la volatilidad futura del precio de BTC</strong>, partiendo únicamente de los cierres diarios.</p>
-<p>Este enfoque permite abordar el problema desde una perspectiva de <strong>riesgo y estabilidad del mercado</strong>.</p>
-</section>
-</section>
-<section id="contexto">
-<h2><em>Contexto</em><a class="headerlink" href="#contexto" title="Link to this heading">#</a></h2>
-<p>El mercado de <strong>Bitcoin</strong> se distingue por su <strong>alta volatilidad</strong>, lo que representa tanto una <strong>oportunidad</strong> como un <strong>desafío</strong> para <em>traders</em>, gestores de riesgo e investigadores financieros.</p>
-<p>Si bien la <strong>predicción del precio</strong> ha sido históricamente el foco de numerosos modelos, <strong>anticipar la volatilidad</strong> ofrece una <strong>ventaja estratégica</strong> más robusta en aplicaciones como:</p>
-<ul class="simple">
-<li><p><strong>Trading algorítmico</strong></p></li>
-<li><p><strong>Asignación dinámica de portafolios</strong></p></li>
-<li><p><strong>Estrategias de cobertura</strong></p></li>
-<li><p><strong>Estimación de riesgos extremos</strong></p></li>
-</ul>
-<p>En este sentido, el <strong>forecasting de volatilidad</strong> —cuando se aborda con <strong>rigor técnico</strong>, <strong>realismo</strong> y <strong>reproducibilidad</strong>— se convierte en una tarea esencial dentro del <strong>análisis cuantitativo moderno</strong> aplicado a mercados de criptomonedas.</p>
+<p>En este sentido, el forecasting de volatilidad —cuando se aborda con <strong>rigor técnico</strong>, <strong>realismo</strong> y <strong>reproducibilidad</strong>— se convierte en una herramienta esencial dentro del análisis cuantitativo moderno aplicado a mercados de criptomonedas.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html"><strong>Análisis Exploratorio de Datos</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html#carga-y-limpieza-de-datos"><strong>Carga y limpieza de datos</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html#estadistica-descriptiva"><strong>Estadística descriptiva</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html#visualizaciones"><strong>Visualizaciones</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html#preprocesamiento-financiero"><strong>Preprocesamiento financiero</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html#generacion-de-features"><strong>Generación de features</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/eda.html#conclusiones-del-eda"><strong>Conclusiones del EDA</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html"><strong>Análisis Exploratorio de Datos</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html#carga-y-limpieza-de-datos"><strong>Carga y limpieza de datos</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html#estadistica-descriptiva"><strong>Estadística descriptiva</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html#visualizaciones"><strong>Visualizaciones</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html#preprocesamiento-financiero"><strong>Preprocesamiento financiero</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html#generacion-de-features"><strong>Generación de features</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html#conclusiones-del-eda"><strong>Conclusiones del EDA</strong></a></li>
 </ul>
 </div>
 </section>
@@ -481,7 +492,7 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="notebooks/eda.html"
+       href="01_eda.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
@@ -505,12 +516,10 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo"><em>Objetivo</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo">Flujo de trabajo</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-del-modelo">Extensión del modelo</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto"><em>Contexto</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-metodologico">Enfoque metodológico</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo">Flujo de trabajo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-financiero">Contexto financiero</a></li>
 </ul>
   </nav></div>
 
