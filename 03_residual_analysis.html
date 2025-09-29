@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Diagnóstico de los Residuos por Horizonte de Pronóstico &#8212; btc-volatility-mlops</title>
+    <title>Análisis de residuos &#8212; btc-volatility-mlops</title>
   
   
   
@@ -60,7 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '03_residual_analysis';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Librerías" href="02_training_model.html" />
+    <link rel="prev" title="Entrenamiento y modelado" href="02_training_model.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -185,13 +185,15 @@
 
 
 
-<li class="toctree-l1"><a class="reference internal" href="02_training_model.html"><strong>Librerías</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html"><strong>Entrenamiento y modelado</strong></a></li>
 
 
 
 
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Análisis de residuos</strong></a></li>
+
 
 
 </ul>
@@ -379,7 +381,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Diagnóstico de los Residuos por Horizonte de Pronóstico</h1>
+    <h1>Análisis de residuos</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -389,7 +391,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Análisis de residuos</strong></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostico-de-los-residuos-por-horizonte-de-pronostico"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-7-y-14-dias-buen-comportamiento">Modelos de 7 y 14 Días — Buen Comportamiento</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-21-y-28-dias-rendimiento-inferior">Modelos de 21 y 28 Días — Rendimiento Inferior</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión General</a></li>
@@ -414,7 +417,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="analisis-de-residuos">
+<h1><strong>Análisis de residuos</strong><a class="headerlink" href="#analisis-de-residuos" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">joblib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -443,6 +448,7 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
 <section class="tex2jax_ignore mathjax_ignore" id="diagnostico-de-los-residuos-por-horizonte-de-pronostico">
 <h1><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong><a class="headerlink" href="#diagnostico-de-los-residuos-por-horizonte-de-pronostico" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
@@ -1070,7 +1076,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><strong>Librerías</strong></p>
+        <p class="prev-next-title"><strong>Entrenamiento y modelado</strong></p>
       </div>
     </a>
 </div>
@@ -1089,7 +1095,8 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Análisis de residuos</strong></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostico-de-los-residuos-por-horizonte-de-pronostico"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-7-y-14-dias-buen-comportamiento">Modelos de 7 y 14 Días — Buen Comportamiento</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-21-y-28-dias-rendimiento-inferior">Modelos de 21 y 28 Días — Rendimiento Inferior</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión General</a></li>
