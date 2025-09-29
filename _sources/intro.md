@@ -1,52 +1,60 @@
-#  Introducción
+#  Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)
 
-##  Objetivo general
+### Un análisis de Deep Learning para pronosticar la volatilidad diaria de BTC
 
-Este proyecto tiene como propósito desarrollar un sistema de predicción multisalida para el mercado de Bitcoin, abordando dos tareas complementarias:
-
-1. **Predicción del precio de cierre diario** en horizontes de corto plazo.
-2. **Estimación de la volatilidad futura del precio**, como indicador de riesgo.
-
-Ambos modelos se construyen exclusivamente a partir del histórico temporal de precios de cierre (`Close`), sin incorporar variables externas. Esto permite evaluar el poder predictivo de las transformaciones internas del propio activo, manteniendo un enfoque reproducible y realista.
+Este notebook documenta el proceso de **análisis, entrenamiento y validación** de un modelo de `Deep Learning` para predecir la volatilidad del precio de Bitcoin. El objetivo es construir un sistema robusto basado únicamente en el historial de precios, implementando buenas prácticas para el manejo de series temporales.
 
 ---
 
-##  Enfoque metodológico
+##  Contexto y Motivación del Proyecto
 
-La estrategia se basa en:
+El mercado de Bitcoin se caracteriza por una **volatilidad excepcionalmente alta**, lo que representa tanto un riesgo como una oportunidad. Mientras que predecir el precio exacto es una tarea notoriamente difícil, pronosticar la **magnitud de sus variaciones (la volatilidad)** es un enfoque más estable y fundamental en el análisis cuantitativo.
 
-- Aplicación de **ingeniería de retardos (lags)** y medias móviles como variables explicativas.
-- **Validación temporal** mediante particiones secuenciales (`TimeSeriesSplit`).
-- Entrenamiento de **redes neuronales MLP multisalida**, adaptadas a series temporales.
-- **Análisis riguroso de residuos**, incluyendo pruebas de dependencia no lineal (BDS test).
-- Preparación del modelo para su eventual **despliegue en un entorno MLOps** (API, contenedor, CI/CD).
-
----
-
-##  Flujo de trabajo
-
-1. Exploración y cálculo de la **volatilidad histórica**.
-2. Generación de features temporales derivados de `Close`.
-3. Separación de conjuntos de entrenamiento para cada tarea (precio y volatilidad).
-4. Entrenamiento y evaluación de modelos independientes.
-5. Validación con métricas específicas por tipo de salida.
-6. Documentación reproducible y despliegue técnico.
+Anticipar la volatilidad es clave para:
+* La gestión de riesgo en portafolios.
+* El desarrollo de estrategias de trading algorítmico.
+* La cobertura (`hedging`) contra movimientos de mercado adversos.
 
 ---
 
-##  Contexto financiero
+##  Objetivos del Notebook
 
-El mercado de Bitcoin se caracteriza por su **alta volatilidad**, lo que representa tanto una oportunidad como un desafío para traders, gestores de portafolio e investigadores financieros.
+Este trabajo implementa un pipeline de modelado completo y reproducible para:
 
-Si bien la predicción del precio ha sido históricamente el foco de numerosos modelos, **anticipar la volatilidad** ofrece una ventaja estratégica más robusta en aplicaciones como:
+1.  **Analizar** el comportamiento del precio de cierre diario de BTC.
+2.  **Calcular** la volatilidad histórica a partir de los retornos logarítmicos.
+3.  **Entrenar** un modelo `MLPRegressor` multi-salida para predecir 7 horizontes de volatilidad futuros.
+4.  **Validar** el modelo de forma robusta usando validación cruzada para series temporales (`TimeSeriesSplit`) para evitar el *data leakage*.
+5.  **Diagnosticar** los residuos del modelo con pruebas estadísticas (como el test BDS) para asegurar que no queda información predecible sin capturar.
 
-- Trading algorítmico  
-- Asignación dinámica de portafolios  
-- Estrategias de cobertura  
-- Estimación de riesgos extremos  
+**Dataset Utilizado:** Histórico de precios diarios BTC/USD (2018–2025) de Binance.
 
-En este sentido, el forecasting de volatilidad —cuando se aborda con **rigor técnico**, **realismo** y **reproducibilidad**— se convierte en una herramienta esencial dentro del análisis cuantitativo moderno aplicado a mercados de criptomonedas.
+---
 
+##  Enfoque del Modelado
+
+La estrategia se centra en un modelo **MLP (Perceptrón Multicapa) multi-salida**, que aprende a predecir simultáneamente la volatilidad para los próximos 7, 14, 21 y 28 días.
+
+Como features de entrada, se utiliza la **ingeniería de retardos (lags)**, es decir, se alimenta al modelo con los valores de volatilidad de los días anteriores para que aprenda los patrones temporales. Se experimenta con distintas ventanas de lags (7, 14, 21 y 28 días) para encontrar el historial óptimo.
+
+---
+
+##  Resultados Principales
+
+Tras entrenar y evaluar los cuatro modelos, el **modelo que utiliza un lag de 7 días** demostró el mejor rendimiento general en los datos de prueba, alcanzando un **RMSE promedio de 0.2978**.
+
+A continuación, se muestra un ejemplo de su capacidad predictiva en uno de los folds de validación:
+
+![Lag 7 mejor fold 2](mini-2/serie_temporal_lag7_Mejor_Fold_Fold_2.png)
+
+
+---
+
+## 🛠️ Stack Tecnológico Utilizado
+
+* **Análisis y Modelado:** Python, Pandas, NumPy, Scikit-learn
+* **Visualización:** Matplotlib, Seaborn
+* **Entorno:** Jupyter Notebook
 
 
 ```{tableofcontents}

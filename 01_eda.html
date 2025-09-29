@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Análisis Exploratorio de Datos &#8212; My sample book</title>
+    <title>Análisis Exploratorio de Datos &#8212; btc-volatility-mlops</title>
   
   
   
@@ -62,7 +62,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '01_eda';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Introducción" href="intro.html" />
+    <link rel="next" title="Librerías" href="02_training_model.html" />
+    <link rel="prev" title="Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)" href="intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -154,8 +155,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="btc-volatility-mlops - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="btc-volatility-mlops - Home"/>`);</script>
   
   
 </a></div>
@@ -176,7 +177,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="intro.html">
-                    Introducción
+                    Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)
                 </a>
             </li>
         </ul>
@@ -186,6 +187,14 @@
 
 
 
+
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html"><strong>Librerías</strong></a></li>
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="03_residual_analysis.html"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a></li>
 
 
 </ul>
@@ -410,6 +419,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volatilidad-de-btc">Volatilidad de BTC</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#histograma-de-precios"><em>Histograma de precios</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#serie-de-retornos"><em>Serie de retornos</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comportamiento-de-los-retornos"><em>Comportamiento de los retornos</em></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volatilidad-agrupada"><em>Volatilidad agrupada</em></a></li>
@@ -426,34 +436,14 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-volatilidad-historica"><em>Cálculo de volatilidad histórica</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-volatilidad"><em>Visualización de volatilidad</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#precio-vs-volatilidad"><em>Precio vs Volatilidad</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-retorno-absoluto-y-volatilidad"><em>Correlación entre retorno absoluto y volatilidad</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimacion-de-volatilidad-condicional-con-garch-1-1"><em>Estimación de volatilidad condicional con GARCH(1,1)</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-del-modelo-garch-1-1">Justificación del modelo GARCH(1,1)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-de-inclusion">Decisión de inclusión</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generacion-de-features"><strong>Generación de features</strong></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-lags-del-precio"><em>a. Lags del precio</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-corrrelaciones-entre-lags-y-target"><em>Visualización de corrrelaciones entre lags y target</em></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-lags-de-volatilidad-garch"><em>b. Lags de volatilidad GARCH</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-targets-multi-step"><em>c. Targets multi-step</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-retorno-absoluto-y-volatilidad-cada-ventana"><em>Correlación entre retorno absoluto y volatilidad (Cada Ventana)</em></a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones-del-eda"><strong>Conclusiones del EDA</strong></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-clave-del-eda-y-su-influencia-en-el-diseno-del-modelo">Hallazgos Clave del EDA y su Influencia en el Diseño del Modelo</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-1-distribucion-no-normal-y-colas-pesadas-en-los-retornos">📊 Hallazgo 1: Distribución No Normal y Colas Pesadas en los Retornos</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-2-agrupamiento-de-volatilidad-volatility-clustering">📈 Hallazgo 2: Agrupamiento de Volatilidad (Volatility Clustering)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-3-fuerte-persistencia-del-precio-a-corto-plazo">📉 Hallazgo 3: Fuerte Persistencia del Precio a Corto Plazo</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-4-mayor-incertidumbre-en-horizontes-largos">🔮 Hallazgo 4: Mayor Incertidumbre en Horizontes Largos</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-5-impacto-de-eventos-externos-no-capturados">📰 Hallazgo 5: Impacto de Eventos Externos No Capturados</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-seleccionadas-para-el-modelo">Variables seleccionadas para el modelo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posibles-riesgos-o-sesgos-detectados">Posibles riesgos o sesgos detectados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#caracteristicas-del-precio-y-los-retornos">1. Características del Precio y los Retornos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comportamiento-de-la-volatilidad-hallazgo-clave">2. Comportamiento de la Volatilidad (Hallazgo Clave)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autocorrelacion-de-las-series">3. Autocorrelación de las Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implicaciones-para-el-modelado">4. Implicaciones para el Modelado</a></li>
 </ul>
 </li>
 </ul>
@@ -502,7 +492,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btc_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/btc_1d_data_2018_to_2025.csv&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btc_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../data/btc_1d_data_2018_to_2025.csv&quot;</span><span class="p">)</span>
 <span class="n">btc_raw</span>
 </pre></div>
 </div>
@@ -736,6 +726,8 @@ document.write(`
 <span class="c1"># Convertimos la fecha a tipo datetime</span>
 <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">])</span>
 
+<span class="n">btc</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
 <span class="c1"># Aseguramos que el precio de cierre sea tipo float</span>
 <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 
@@ -749,15 +741,14 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
-RangeIndex: 2594 entries, 0 to 2593
-Data columns (total 3 columns):
- #   Column     Non-Null Count  Dtype         
----  ------     --------------  -----         
- 0   Date       2594 non-null   datetime64[ns]
- 1   Close      2594 non-null   float64       
- 2   LogReturn  2593 non-null   float64       
-dtypes: datetime64[ns](1), float64(2)
-memory usage: 60.9 KB
+DatetimeIndex: 2594 entries, 2018-01-01 to 2025-02-06
+Data columns (total 2 columns):
+ #   Column     Non-Null Count  Dtype  
+---  ------     --------------  -----  
+ 0   Close      2594 non-null   float64
+ 1   LogReturn  2593 non-null   float64
+dtypes: float64(2)
+memory usage: 60.8 KB
 </pre></div>
 </div>
 </div>
@@ -767,14 +758,12 @@ memory usage: 60.9 KB
 <h2><em>Revisión de valores faltantes</em><a class="headerlink" href="#revision-de-valores-faltantes" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Conteo de valores nulos por columna</span>
-<span class="n">btc</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btc</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Date         0
-Close        0
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Close        0
 LogReturn    1
 dtype: int64
 </pre></div>
@@ -828,103 +817,103 @@ dtype: int64
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_413b2_row0_col0, #T_413b2_row1_col0, #T_413b2_row2_col0, #T_413b2_row3_col0, #T_413b2_row4_col0, #T_413b2_row5_col0, #T_413b2_row6_col0, #T_413b2_row7_col0, #T_413b2_row8_col0 {
+#T_8a890_row0_col0, #T_8a890_row1_col0, #T_8a890_row2_col0, #T_8a890_row3_col0, #T_8a890_row4_col0, #T_8a890_row5_col0, #T_8a890_row6_col0, #T_8a890_row7_col0, #T_8a890_row8_col0 {
   text-align: left;
 }
-#T_413b2_row0_col1 {
+#T_8a890_row0_col1 {
   background-color: #dadaeb;
   color: #000000;
   text-align: left;
 }
-#T_413b2_row1_col1, #T_413b2_row7_col1 {
+#T_8a890_row1_col1, #T_8a890_row7_col1 {
   background-color: #e4e3f0;
   color: #000000;
   text-align: left;
 }
-#T_413b2_row2_col1 {
+#T_8a890_row2_col1 {
   background-color: #e3e2ef;
   color: #000000;
   text-align: left;
 }
-#T_413b2_row3_col1 {
+#T_8a890_row3_col1 {
   background-color: #fcfbfd;
   color: #000000;
   text-align: left;
 }
-#T_413b2_row4_col1 {
+#T_8a890_row4_col1 {
   background-color: #3f007d;
   color: #f1f1f1;
   text-align: left;
 }
-#T_413b2_row5_col1 {
+#T_8a890_row5_col1 {
   background-color: #440981;
   color: #f1f1f1;
   text-align: left;
 }
-#T_413b2_row6_col1 {
+#T_8a890_row6_col1 {
   background-color: #f6f5f9;
   color: #000000;
   text-align: left;
 }
-#T_413b2_row8_col1 {
+#T_8a890_row8_col1 {
   background-color: #b8b8d9;
   color: #000000;
   text-align: left;
 }
 </style>
-<table id="T_413b2">
+<table id="T_8a890">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_413b2_level0_col0" class="col_heading level0 col0" >Estadística</th>
-      <th id="T_413b2_level0_col1" class="col_heading level0 col1" >Valor</th>
+      <th id="T_8a890_level0_col0" class="col_heading level0 col0" >Estadística</th>
+      <th id="T_8a890_level0_col1" class="col_heading level0 col1" >Valor</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_413b2_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_413b2_row0_col0" class="data row0 col0" >Media</td>
-      <td id="T_413b2_row0_col1" class="data row0 col1" >29,090.19</td>
+      <th id="T_8a890_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_8a890_row0_col0" class="data row0 col0" >Media</td>
+      <td id="T_8a890_row0_col1" class="data row0 col1" >29,090.19</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_413b2_row1_col0" class="data row1 col0" >Mediana</td>
-      <td id="T_413b2_row1_col1" class="data row1 col1" >22,741.11</td>
+      <th id="T_8a890_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_8a890_row1_col0" class="data row1 col0" >Mediana</td>
+      <td id="T_8a890_row1_col1" class="data row1 col1" >22,741.11</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_413b2_row2_col0" class="data row2 col0" >Desviación estándar</td>
-      <td id="T_413b2_row2_col1" class="data row2 col1" >23,576.23</td>
+      <th id="T_8a890_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_8a890_row2_col0" class="data row2 col0" >Desviación estándar</td>
+      <td id="T_8a890_row2_col1" class="data row2 col1" >23,576.23</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_413b2_row3_col0" class="data row3 col0" >Mínimo</td>
-      <td id="T_413b2_row3_col1" class="data row3 col1" >3,211.72</td>
+      <th id="T_8a890_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_8a890_row3_col0" class="data row3 col0" >Mínimo</td>
+      <td id="T_8a890_row3_col1" class="data row3 col1" >3,211.72</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_413b2_row4_col0" class="data row4 col0" >Máximo</td>
-      <td id="T_413b2_row4_col1" class="data row4 col1" >106,143.82</td>
+      <th id="T_8a890_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_8a890_row4_col0" class="data row4 col0" >Máximo</td>
+      <td id="T_8a890_row4_col1" class="data row4 col1" >106,143.82</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_413b2_row5_col0" class="data row5 col0" >Rango</td>
-      <td id="T_413b2_row5_col1" class="data row5 col1" >102,932.10</td>
+      <th id="T_8a890_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_8a890_row5_col0" class="data row5 col0" >Rango</td>
+      <td id="T_8a890_row5_col1" class="data row5 col1" >102,932.10</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row6" class="row_heading level0 row6" >6</th>
-      <td id="T_413b2_row6_col0" class="data row6 col0" >Cuartil 25%</td>
-      <td id="T_413b2_row6_col1" class="data row6 col1" >9,068.84</td>
+      <th id="T_8a890_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_8a890_row6_col0" class="data row6 col0" >Cuartil 25%</td>
+      <td id="T_8a890_row6_col1" class="data row6 col1" >9,068.84</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row7" class="row_heading level0 row7" >7</th>
-      <td id="T_413b2_row7_col0" class="data row7 col0" >Cuartil 50%</td>
-      <td id="T_413b2_row7_col1" class="data row7 col1" >22,741.11</td>
+      <th id="T_8a890_level0_row7" class="row_heading level0 row7" >7</th>
+      <td id="T_8a890_row7_col0" class="data row7 col0" >Cuartil 50%</td>
+      <td id="T_8a890_row7_col1" class="data row7 col1" >22,741.11</td>
     </tr>
     <tr>
-      <th id="T_413b2_level0_row8" class="row_heading level0 row8" >8</th>
-      <td id="T_413b2_row8_col0" class="data row8 col0" >Cuartil 75%</td>
-      <td id="T_413b2_row8_col1" class="data row8 col1" >43,527.39</td>
+      <th id="T_8a890_level0_row8" class="row_heading level0 row8" >8</th>
+      <td id="T_8a890_row8_col0" class="data row8 col0" >Cuartil 75%</td>
+      <td id="T_8a890_row8_col1" class="data row8 col1" >43,527.39</td>
     </tr>
   </tbody>
 </table>
@@ -934,7 +923,7 @@ dtype: int64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btc_date_range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
     <span class="s1">&#39;Estadística&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Rango temporal&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;Valor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="s1">&#39;Valor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">btc</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">btc</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
 <span class="p">})</span>
 
 <span class="c1"># Mostrar ambas tablas</span>
@@ -1008,11 +997,10 @@ dtype: int64
         <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.50</span><span class="p">),</span>
         <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">),</span>
         <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
-        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># rendimiento total en %</span>
+        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>  
     <span class="p">]</span>
 <span class="p">})</span>
 
-<span class="c1"># Aplicar estilo visual con paleta Purples</span>
 <span class="n">styled_logret_table</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">btc_logret_summary</span><span class="o">.</span><span class="n">style</span>
     <span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Valor&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:,.6f}</span><span class="s1">&#39;</span><span class="p">})</span>
@@ -1026,83 +1014,83 @@ dtype: int64
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
-#T_8378d_row0_col0, #T_8378d_row1_col0, #T_8378d_row2_col0, #T_8378d_row3_col0, #T_8378d_row4_col0, #T_8378d_row5_col0, #T_8378d_row6_col0, #T_8378d_row7_col0, #T_8378d_row8_col0, #T_8378d_row9_col0, #T_8378d_row10_col0 {
+#T_c3d12_row0_col0, #T_c3d12_row1_col0, #T_c3d12_row2_col0, #T_c3d12_row3_col0, #T_c3d12_row4_col0, #T_c3d12_row5_col0, #T_c3d12_row6_col0, #T_c3d12_row7_col0, #T_c3d12_row8_col0, #T_c3d12_row9_col0, #T_c3d12_row10_col0 {
   text-align: left;
 }
-#T_8378d_row0_col1, #T_8378d_row1_col1, #T_8378d_row2_col1, #T_8378d_row3_col1, #T_8378d_row4_col1, #T_8378d_row5_col1, #T_8378d_row6_col1, #T_8378d_row7_col1, #T_8378d_row8_col1, #T_8378d_row9_col1 {
+#T_c3d12_row0_col1, #T_c3d12_row1_col1, #T_c3d12_row2_col1, #T_c3d12_row3_col1, #T_c3d12_row4_col1, #T_c3d12_row5_col1, #T_c3d12_row6_col1, #T_c3d12_row7_col1, #T_c3d12_row8_col1, #T_c3d12_row9_col1 {
   background-color: #fcfbfd;
   color: #000000;
   text-align: left;
 }
-#T_8378d_row10_col1 {
+#T_c3d12_row10_col1 {
   background-color: #3f007d;
   color: #f1f1f1;
   text-align: left;
 }
 </style>
-<table id="T_8378d">
+<table id="T_c3d12">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_8378d_level0_col0" class="col_heading level0 col0" >Estadística</th>
-      <th id="T_8378d_level0_col1" class="col_heading level0 col1" >Valor</th>
+      <th id="T_c3d12_level0_col0" class="col_heading level0 col0" >Estadística</th>
+      <th id="T_c3d12_level0_col1" class="col_heading level0 col1" >Valor</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_8378d_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_8378d_row0_col0" class="data row0 col0" >Media</td>
-      <td id="T_8378d_row0_col1" class="data row0 col1" >0.000769</td>
+      <th id="T_c3d12_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_c3d12_row0_col0" class="data row0 col0" >Media</td>
+      <td id="T_c3d12_row0_col1" class="data row0 col1" >0.000769</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_8378d_row1_col0" class="data row1 col0" >Mediana</td>
-      <td id="T_8378d_row1_col1" class="data row1 col1" >0.000708</td>
+      <th id="T_c3d12_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_c3d12_row1_col0" class="data row1 col0" >Mediana</td>
+      <td id="T_c3d12_row1_col1" class="data row1 col1" >0.000708</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_8378d_row2_col0" class="data row2 col0" >Desviación estándar</td>
-      <td id="T_8378d_row2_col1" class="data row2 col1" >0.036221</td>
+      <th id="T_c3d12_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_c3d12_row2_col0" class="data row2 col0" >Desviación estándar</td>
+      <td id="T_c3d12_row2_col1" class="data row2 col1" >0.036221</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_8378d_row3_col0" class="data row3 col0" >Mínimo</td>
-      <td id="T_8378d_row3_col1" class="data row3 col1" >-0.502607</td>
+      <th id="T_c3d12_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_c3d12_row3_col0" class="data row3 col0" >Mínimo</td>
+      <td id="T_c3d12_row3_col1" class="data row3 col1" >-0.502607</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_8378d_row4_col0" class="data row4 col0" >Máximo</td>
-      <td id="T_8378d_row4_col1" class="data row4 col1" >0.178449</td>
+      <th id="T_c3d12_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_c3d12_row4_col0" class="data row4 col0" >Máximo</td>
+      <td id="T_c3d12_row4_col1" class="data row4 col1" >0.178449</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_8378d_row5_col0" class="data row5 col0" >Rango</td>
-      <td id="T_8378d_row5_col1" class="data row5 col1" >0.681056</td>
+      <th id="T_c3d12_level0_row5" class="row_heading level0 row5" >5</th>
+      <td id="T_c3d12_row5_col0" class="data row5 col0" >Rango</td>
+      <td id="T_c3d12_row5_col1" class="data row5 col1" >0.681056</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row6" class="row_heading level0 row6" >6</th>
-      <td id="T_8378d_row6_col0" class="data row6 col0" >Cuartil 25%</td>
-      <td id="T_8378d_row6_col1" class="data row6 col1" >-0.014171</td>
+      <th id="T_c3d12_level0_row6" class="row_heading level0 row6" >6</th>
+      <td id="T_c3d12_row6_col0" class="data row6 col0" >Cuartil 25%</td>
+      <td id="T_c3d12_row6_col1" class="data row6 col1" >-0.014171</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row7" class="row_heading level0 row7" >7</th>
-      <td id="T_8378d_row7_col0" class="data row7 col0" >Cuartil 50%</td>
-      <td id="T_8378d_row7_col1" class="data row7 col1" >0.000708</td>
+      <th id="T_c3d12_level0_row7" class="row_heading level0 row7" >7</th>
+      <td id="T_c3d12_row7_col0" class="data row7 col0" >Cuartil 50%</td>
+      <td id="T_c3d12_row7_col1" class="data row7 col1" >0.000708</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row8" class="row_heading level0 row8" >8</th>
-      <td id="T_8378d_row8_col0" class="data row8 col0" >Cuartil 75%</td>
-      <td id="T_8378d_row8_col1" class="data row8 col1" >0.016304</td>
+      <th id="T_c3d12_level0_row8" class="row_heading level0 row8" >8</th>
+      <td id="T_c3d12_row8_col0" class="data row8 col0" >Cuartil 75%</td>
+      <td id="T_c3d12_row8_col1" class="data row8 col1" >0.016304</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row9" class="row_heading level0 row9" >9</th>
-      <td id="T_8378d_row9_col0" class="data row9 col0" >Retorno acumulado</td>
-      <td id="T_8378d_row9_col1" class="data row9 col1" >1.994559</td>
+      <th id="T_c3d12_level0_row9" class="row_heading level0 row9" >9</th>
+      <td id="T_c3d12_row9_col0" class="data row9 col0" >Retorno acumulado</td>
+      <td id="T_c3d12_row9_col1" class="data row9 col1" >1.994559</td>
     </tr>
     <tr>
-      <th id="T_8378d_level0_row10" class="row_heading level0 row10" >10</th>
-      <td id="T_8378d_row10_col0" class="data row10 col0" >Rendimiento total (%)</td>
-      <td id="T_8378d_row10_col1" class="data row10 col1" >634.896338</td>
+      <th id="T_c3d12_level0_row10" class="row_heading level0 row10" >10</th>
+      <td id="T_c3d12_row10_col0" class="data row10 col0" >Rendimiento total (%)</td>
+      <td id="T_c3d12_row10_col1" class="data row10 col1" >634.896338</td>
     </tr>
   </tbody>
 </table>
@@ -1118,7 +1106,7 @@ dtype: int64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extraemos el año como nueva columna</span>
-<span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
 
 <span class="c1"># Agrupamos por año y calculamos estadísticas</span>
 <span class="n">annual_stats</span> <span class="o">=</span> <span class="n">btc</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Year&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
@@ -1126,7 +1114,6 @@ dtype: int64
     <span class="s1">&#39;LogReturn&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]</span>
 <span class="p">})</span>
 
-<span class="c1"># Visualización ordenada</span>
 <span class="n">annual_stats</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Close_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;Close_std&#39;</span><span class="p">,</span> <span class="s1">&#39;Close_min&#39;</span><span class="p">,</span> <span class="s1">&#39;Close_max&#39;</span><span class="p">,</span> <span class="s1">&#39;LogReturn_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;LogReturn_std&#39;</span><span class="p">]</span>
 <span class="n">annual_stats</span> <span class="o">=</span> <span class="n">annual_stats</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">annual_stats</span>
@@ -1284,8 +1271,7 @@ dtype: int64
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Asegurar que las columnas sean planas (sin MultiIndex)</span>
-<span class="n">annual_stats</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">annual_stats</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_flat_index</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">annual_stats</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">annual_stats</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_flat_index</span><span class="p">()</span>
 <span class="n">annual_stats</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;Precio promedio (USD)&#39;</span><span class="p">,</span>
     <span class="s1">&#39;Desviación estándar del precio&#39;</span><span class="p">,</span>
@@ -1315,7 +1301,7 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eccc5b1c0e6c5145d00ecd760dcef4a9293d049abe303a8692f3c399922311aa.png" src="_images/eccc5b1c0e6c5145d00ecd760dcef4a9293d049abe303a8692f3c399922311aa.png" />
+<img alt="_images/146246f4e91cfb4c0abedaf2ce6282b2332cd66f48a7228c0f12ca3ac96419df.png" src="_images/146246f4e91cfb4c0abedaf2ce6282b2332cd66f48a7228c0f12ca3ac96419df.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1332,7 +1318,7 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5f8265189d7e7ce0fc60ad5763a0dec73abda9991c60c2dc44ee35e78f5f4566.png" src="_images/5f8265189d7e7ce0fc60ad5763a0dec73abda9991c60c2dc44ee35e78f5f4566.png" />
+<img alt="_images/529db25b001643e0ab3ffee696633f5f30c2934b4c3b7d05f138af8fb9d76211.png" src="_images/529db25b001643e0ab3ffee696633f5f30c2934b4c3b7d05f138af8fb9d76211.png" />
 </div>
 </div>
 <ul class="simple">
@@ -1351,7 +1337,7 @@ El segundo gráfico muestra cómo la <strong>volatilidad ha disminuido progresiv
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">)</span> 
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Precio de cierre diario de BTC (2018–2025)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fecha&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Precio de cierre (USD)&quot;</span><span class="p">)</span>
@@ -1362,7 +1348,7 @@ El segundo gráfico muestra cómo la <strong>volatilidad ha disminuido progresiv
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b1cf9c60dea09ec07cd3637f169e4747eac51f85251d38d5fe3c0cdbe5e31785.png" src="_images/b1cf9c60dea09ec07cd3637f169e4747eac51f85251d38d5fe3c0cdbe5e31785.png" />
+<img alt="_images/684369b31b0f9cfae1a492c0b128eaf0404edbd47b3663bd412b535b9c170565.png" src="_images/684369b31b0f9cfae1a492c0b128eaf0404edbd47b3663bd412b535b9c170565.png" />
 </div>
 </div>
 <section id="tendencias-generales-de-btc">
@@ -1383,12 +1369,32 @@ El segundo gráfico muestra cómo la <strong>volatilidad ha disminuido progresiv
 <p>Para fines de modelado, esto implica la necesidad de incluir lags temporales, modelos multisalida y técnicas capaces de capturar dependencias no lineales, así como considerar mecanismos de regularización y detección de cambios estructurales.</p>
 </section>
 </section>
+<section id="histograma-de-precios">
+<h2><em>Histograma de precios</em><a class="headerlink" href="#histograma-de-precios" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribución de precios de cierre&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;LogReturn&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frecuencia&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/06dc2ebe7f23b2abf2fc501933eb2859a1deb94246789b7c3e95141aea103632.png" src="_images/06dc2ebe7f23b2abf2fc501933eb2859a1deb94246789b7c3e95141aea103632.png" />
+</div>
+</div>
+</section>
 <section id="serie-de-retornos">
 <h2><em>Serie de retornos</em><a class="headerlink" href="#serie-de-retornos" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Retornos logarítmicos diarios de BTC&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fecha&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;LogReturn&quot;</span><span class="p">)</span>
@@ -1399,7 +1405,7 @@ El segundo gráfico muestra cómo la <strong>volatilidad ha disminuido progresiv
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2b771bae3e931c3728107042958f85a696212474d639d2db909f7344c6590942.png" src="_images/2b771bae3e931c3728107042958f85a696212474d639d2db909f7344c6590942.png" />
+<img alt="_images/8243742fbc8a936fd13797b1a7bbf6bbc8750b88342ca9414af46ed0c6340a53.png" src="_images/8243742fbc8a936fd13797b1a7bbf6bbc8750b88342ca9414af46ed0c6340a53.png" />
 </div>
 </div>
 <section id="comportamiento-de-los-retornos">
@@ -1448,44 +1454,44 @@ El segundo gráfico muestra cómo la <strong>volatilidad ha disminuido progresiv
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Date</th>
       <th>Close</th>
       <th>LogReturn</th>
       <th>Year</th>
     </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
   </thead>
   <tbody>
     <tr>
-      <th>801</th>
-      <td>2020-03-12</td>
+      <th>2020-03-12</th>
       <td>4800.00</td>
       <td>-0.502607</td>
       <td>2020</td>
     </tr>
     <tr>
-      <th>15</th>
-      <td>2018-01-16</td>
+      <th>2018-01-16</th>
       <td>10900.00</td>
       <td>-0.216880</td>
       <td>2018</td>
     </tr>
     <tr>
-      <th>1624</th>
-      <td>2022-06-13</td>
+      <th>2022-06-13</th>
       <td>22487.41</td>
       <td>-0.166998</td>
       <td>2022</td>
     </tr>
     <tr>
-      <th>35</th>
-      <td>2018-02-05</td>
+      <th>2018-02-05</th>
       <td>6939.99</td>
       <td>-0.164980</td>
       <td>2018</td>
     </tr>
     <tr>
-      <th>1234</th>
-      <td>2021-05-19</td>
+      <th>2021-05-19</th>
       <td>36690.09</td>
       <td>-0.155194</td>
       <td>2021</td>
@@ -1565,44 +1571,44 @@ El segundo gráfico muestra cómo la <strong>volatilidad ha disminuido progresiv
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Date</th>
       <th>Close</th>
       <th>LogReturn</th>
       <th>Year</th>
     </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1134</th>
-      <td>2021-02-08</td>
+      <th>2021-02-08</th>
       <td>46374.87</td>
       <td>0.178449</td>
       <td>2021</td>
     </tr>
     <tr>
-      <th>456</th>
-      <td>2019-04-02</td>
+      <th>2019-04-02</th>
       <td>4857.29</td>
       <td>0.158684</td>
       <td>2019</td>
     </tr>
     <tr>
-      <th>662</th>
-      <td>2019-10-25</td>
+      <th>2019-10-25</th>
       <td>8655.02</td>
       <td>0.154984</td>
       <td>2019</td>
     </tr>
     <tr>
-      <th>802</th>
-      <td>2020-03-13</td>
+      <th>2020-03-13</th>
       <td>5578.60</td>
       <td>0.150322</td>
       <td>2020</td>
     </tr>
     <tr>
-      <th>1519</th>
-      <td>2022-02-28</td>
+      <th>2022-02-28</th>
       <td>43160.00</td>
       <td>0.135279</td>
       <td>2022</td>
@@ -1672,7 +1678,7 @@ El segundo gráfico muestra cómo la <strong>volatilidad ha disminuido progresiv
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0e55901e27fdceb68a5cb1027dd9e1d256cbf072053806953341d1de906c6b70.png" src="_images/0e55901e27fdceb68a5cb1027dd9e1d256cbf072053806953341d1de906c6b70.png" />
+<img alt="_images/1bbb060ea18ae0ee3eeb6c5c72630c03114a568e0f8fec64ed484db1822e6eed.png" src="_images/1bbb060ea18ae0ee3eeb6c5c72630c03114a568e0f8fec64ed484db1822e6eed.png" />
 </div>
 </div>
 <p>El gráfico muestra que la mayoría de los retornos diarios de Bitcoin se concentran cerca de cero, reflejando movimientos pequeños en la mayor parte del tiempo. Sin embargo, presenta una asimetría negativa, ya que las caídas tienden a ser más intensas que las subidas, con una cola izquierda más larga que evidencia episodios de pérdidas abruptas como los del 12 de marzo de 2020 o el 16 de enero de 2018. Este comportamiento es característico de activos financieros altamente volátiles, cuya distribución se centra en cero pero presenta colas pesadas, lo que sugiere un riesgo significativo de movimientos extremos.</p>
@@ -1709,26 +1715,21 @@ Curtosis: 17.01619756942232
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.graphics.tsaplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_acf</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="c1"># Crear figura y eje</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
-<span class="c1"># Graficar ACF con estilo morado</span>
 <span class="n">plot_acf</span><span class="p">(</span><span class="n">logret</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
-<span class="c1"># Personalizar color de los puntos y líneas</span>
 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">:</span>
-    <span class="n">line</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>  <span class="c1"># tono púrpura</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">:</span>
     <span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>
     <span class="n">patch</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span>
 
-<span class="c1"># Personalizar bandas de confianza (sombreado)</span>
 <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
-    <span class="n">polygon</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#b19cd9&#39;</span><span class="p">)</span>  <span class="c1"># púrpura claro</span>
+    <span class="n">polygon</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#b19cd9&#39;</span><span class="p">)</span>  
     <span class="n">polygon</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
 
-<span class="c1"># Título y estilo</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ACF de retornos logarítmicos&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -1737,7 +1738,7 @@ Curtosis: 17.01619756942232
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b1f5a37c6e983f7d3e930c247d125557091650a707a1656ec336ccfc819ebf77.png" src="_images/b1f5a37c6e983f7d3e930c247d125557091650a707a1656ec336ccfc819ebf77.png" />
+<img alt="_images/38112bbde539c8ccad0a3108b066b7ad67520b44745a6ad9e635a2f70828b372.png" src="_images/38112bbde539c8ccad0a3108b066b7ad67520b44745a6ad9e635a2f70828b372.png" />
 </div>
 </div>
 <p>La autocorrelación en lag 0 es naturalmente alta (valor 1), ya que representa la correlación de la serie consigo misma. Para lags mayores a 0, los valores están muy cerca de cero, lo que indica que los retornos logarítmicos diarios de BTC son prácticamente independientes en el tiempo, sugiriendo un comportamiento cercano al ruido blanco y respaldando la hipótesis de eficiencia del mercado. Para cuantificar estadísticamente esta independencia, se aplicará la <strong>prueba de Ljung-Box</strong>, la cual evalúa si existe autocorrelación significativa en los lags seleccionados, permitiendo determinar de manera objetiva si los retornos diarios se comportan como ruido blanco.</p>
@@ -1765,26 +1766,22 @@ Curtosis: 17.01619756942232
 <h2><em>ACF de LogReturn²</em><a class="headerlink" href="#acf-de-logreturn2" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear figura y eje</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
 <span class="c1"># Graficar ACF de retornos al cuadrado</span>
 <span class="n">plot_acf</span><span class="p">(</span><span class="n">logret</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
-<span class="c1"># Personalizar color de líneas y barras</span>
 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">:</span>
-    <span class="n">line</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>  <span class="c1"># púrpura intenso</span>
+    <span class="n">line</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>  
 
 <span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">patches</span><span class="p">:</span>
     <span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>
     <span class="n">patch</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span>
 
-<span class="c1"># Personalizar sombreado de bandas de confianza</span>
 <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
-    <span class="n">polygon</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#b19cd9&#39;</span><span class="p">)</span>  <span class="c1"># púrpura claro</span>
+    <span class="n">polygon</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s1">&#39;#b19cd9&#39;</span><span class="p">)</span> 
     <span class="n">polygon</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
 
-<span class="c1"># Título y estilo</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;ACF de retornos al cuadrado&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -1793,7 +1790,7 @@ Curtosis: 17.01619756942232
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fac895d8194e7cf58ea794489774275c36b4f2a312d8135d27465201bfbe7fd9.png" src="_images/fac895d8194e7cf58ea794489774275c36b4f2a312d8135d27465201bfbe7fd9.png" />
+<img alt="_images/ae2c0f6317ed2bf3c3441e2962ad99e488eca30cc366c27ec35b5c57aa958827.png" src="_images/ae2c0f6317ed2bf3c3441e2962ad99e488eca30cc366c27ec35b5c57aa958827.png" />
 </div>
 </div>
 <p>La autocorrelación de los retornos al cuadrado muestra que, aunque la mayoría de los lags se encuentran dentro del intervalo de confianza, existe una persistencia leve en los primeros lags. Esto indica que la volatilidad tiende a agruparse en el tiempo, un fenómeno conocido como <em>volatility clustering</em>, típico en activos financieros: días con alta volatilidad suelen ser seguidos por otros días también volátiles. Para cuantificar formalmente esta dependencia temporal, se aplicará la prueba de <strong>Ljung-Box</strong>, que permitirá evaluar si la autocorrelación observada es estadísticamente significativa.</p>
@@ -1876,13 +1873,14 @@ Aunque el cálculo de <code class="docutils literal notranslate"><span class="pr
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Volatilidad Anualizada&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>  
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/243454aa8c5aafd672ae72f895cdfc2c81133fdd1abf8b3ade14ef84c09b2064.png" src="_images/243454aa8c5aafd672ae72f895cdfc2c81133fdd1abf8b3ade14ef84c09b2064.png" />
+<img alt="_images/3847037a4da3c90725f30bd88e6370c2ccad6993d223b1278ac84d50c04f039f.png" src="_images/3847037a4da3c90725f30bd88e6370c2ccad6993d223b1278ac84d50c04f039f.png" />
 </div>
 </div>
 <p>La <strong>volatilidad anualizada</strong> calculada con una ventana móvil de 30 días muestra claros <strong>patrones de agrupamiento</strong> en la serie temporal de BTC. Se destacan episodios de alta volatilidad:</p>
@@ -1900,13 +1898,13 @@ Aunque el cálculo de <code class="docutils literal notranslate"><span class="pr
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
 <span class="c1"># Precio</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Precio BTC&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Precio BTC&#39;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Precio (USD)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;#9370DB&#39;</span><span class="p">)</span>
 
 <span class="c1"># Volatilidad (eje secundario)</span>
 <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Volatilidad_21d&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Volatilidad anualizada&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Volatilidad_21d&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Volatilidad anualizada&#39;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Volatilidad&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>
 
@@ -1917,13 +1915,13 @@ Aunque el cálculo de <code class="docutils literal notranslate"><span class="pr
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/be2b8d5d28f4582032ed2e21870a0aa85d5ebc90b9d3b193fcda74a3e7bfe809.png" src="_images/be2b8d5d28f4582032ed2e21870a0aa85d5ebc90b9d3b193fcda74a3e7bfe809.png" />
+<img alt="_images/9cf11a634fdec5c3647a5a80c176e85b738cd06ab593539f5f20c6b18cf56039.png" src="_images/9cf11a634fdec5c3647a5a80c176e85b738cd06ab593539f5f20c6b18cf56039.png" />
 </div>
 </div>
 <p>El gráfico revela que la volatilidad anualizada de BTC (Se escogió de 21 días para el gráfico) no sigue linealmente al precio, sino que responde a la intensidad y frecuencia de los movimientos diarios. Esta observación justifica el modelado separado de la volatilidad como variable objetivo, y refuerza la necesidad de capturar sus patrones temporales mediante técnicas de aprendizaje profundo.</p>
 </section>
-<section id="correlacion-entre-retorno-absoluto-y-volatilidad">
-<h2><em>Correlación entre retorno absoluto y volatilidad</em><a class="headerlink" href="#correlacion-entre-retorno-absoluto-y-volatilidad" title="Link to this heading">#</a></h2>
+<section id="correlacion-entre-retorno-absoluto-y-volatilidad-cada-ventana">
+<h2><em>Correlación entre retorno absoluto y volatilidad (Cada Ventana)</em><a class="headerlink" href="#correlacion-entre-retorno-absoluto-y-volatilidad-cada-ventana" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;AbsReturn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;LogReturn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
@@ -1949,484 +1947,59 @@ Aunque el cálculo de <code class="docutils literal notranslate"><span class="pr
 </div>
 </div>
 <p>Se observa una <strong>correlación positiva moderada</strong>, especialmente en ventanas cortas (<strong>7 y 14 días</strong>), lo que indica que los <strong>retornos absolutos diarios (AbsReturn)</strong> tienden a coincidir con períodos de mayor volatilidad reciente. A medida que se amplía la ventana de cálculo, la correlación <strong>disminuye gradualmente</strong>, lo que sugiere que <strong>AbsReturn captura mejor la volatilidad inmediata</strong> que la acumulada en horizontes más largos.</p>
-<p><strong>Conclusión</strong>: Este patrón valida el uso de <strong>AbsReturn como proxy de riesgo instantáneo</strong>, útil para alimentar modelos de predicción de <strong>volatilidad futura</strong>.</p>
-</section>
-<section id="estimacion-de-volatilidad-condicional-con-garch-1-1">
-<h2><em>Estimación de volatilidad condicional con GARCH(1,1)</em><a class="headerlink" href="#estimacion-de-volatilidad-condicional-con-garch-1-1" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">arch</span><span class="w"> </span><span class="kn">import</span> <span class="n">arch_model</span>
-
-<span class="n">logret</span> <span class="o">=</span> <span class="n">logret</span><span class="o">*</span><span class="mi">100</span> 
-
-<span class="c1"># Creamos el modelo GARCH(1,1) sobre los retornos logarítmicos</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">arch_model</span><span class="p">(</span><span class="n">logret</span><span class="p">,</span> <span class="n">vol</span><span class="o">=</span><span class="s1">&#39;GARCH&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="s1">&#39;Constant&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span>
-
-<span class="c1"># Ajustamos el modelo</span>
-<span class="n">garch_fit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">disp</span><span class="o">=</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
-
-<span class="c1"># Mostramos el resumen del modelo</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">garch_fit</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                     Constant Mean - GARCH Model Results                      
-==============================================================================
-Dep. Variable:              LogReturn   R-squared:                       0.000
-Mean Model:             Constant Mean   Adj. R-squared:                  0.000
-Vol Model:                      GARCH   Log-Likelihood:               -6862.27
-Distribution:                  Normal   AIC:                           13732.5
-Method:            Maximum Likelihood   BIC:                           13756.0
-                                        No. Observations:                 2593
-Date:                Mon, Sep 15 2025   Df Residuals:                     2592
-Time:                        23:15:09   Df Model:                            1
-                                Mean Model                                
-==========================================================================
-                 coef    std err          t      P&gt;|t|    95.0% Conf. Int.
---------------------------------------------------------------------------
-mu             0.1510  6.734e-02      2.242  2.499e-02 [1.897e-02,  0.283]
-                              Volatility Model                             
-===========================================================================
-                 coef    std err          t      P&gt;|t|     95.0% Conf. Int.
----------------------------------------------------------------------------
-omega          0.6423      0.263      2.446  1.445e-02    [  0.128,  1.157]
-alpha[1]       0.0914  4.937e-02      1.851  6.415e-02 [-5.371e-03,  0.188]
-beta[1]        0.8649  4.833e-02     17.894  1.307e-71    [  0.770,  0.960]
-===========================================================================
-
-Covariance estimator: robust
-</pre></div>
-</div>
-</div>
-</div>
-<section id="justificacion-del-modelo-garch-1-1">
-<h3>Justificación del modelo GARCH(1,1)<a class="headerlink" href="#justificacion-del-modelo-garch-1-1" title="Link to this heading">#</a></h3>
-<p>Se ajusta un modelo GARCH(1,1) sobre los retornos logarítmicos diarios de BTC con fines exploratorios y comparativos. Este enfoque permite estimar la <strong>volatilidad condicional</strong>, es decir, la variabilidad esperada en los retornos en función de la información pasada.</p>
-<p>Aunque el modelo GARCH no forma parte del pipeline de predicción principal —que se basa exclusivamente en los precios de cierre y redes neuronales— su inclusión cumple tres objetivos estratégicos:</p>
-<ol class="arabic simple">
-<li><p><strong>Validación financiera</strong>: confirma la presencia de heterocedasticidad condicional y la persistencia de la volatilidad, lo que respalda el diseño de un modelo MLP con memoria temporal.</p></li>
-<li><p><strong>Benchmark estadístico</strong>: genera una serie de volatilidad que sirve como referencia para evaluar si el modelo de deep learning logra capturar dinámicas similares o más complejas.</p></li>
-<li><p><strong>Rigor metodológico</strong>: demuestra conocimiento de enfoques clásicos en modelado de riesgo, fortaleciendo la narrativa técnica del proyecto.</p></li>
-</ol>
-<p>Los resultados del modelo muestran una media positiva significativa en los retornos y una estructura de volatilidad altamente persistente (α + β ≈ 0.956), lo que valida el enfoque de modelado temporal y justifica el uso de ventanas móviles y retardos en el diseño del modelo MLP.</p>
-</section>
-<section id="decision-de-inclusion">
-<h3>Decisión de inclusión<a class="headerlink" href="#decision-de-inclusion" title="Link to this heading">#</a></h3>
-<p>Dado que la serie estimada por el modelo GARCH(1,1) refleja una volatilidad condicional altamente persistente y estadísticamente significativa, se decide <strong>incluir <code class="docutils literal notranslate"><span class="pre">Volatilidad_GARCH</span></code> como variable explicativa</strong> en el modelo MLP.<br />
-Su incorporación aporta una señal clásica de riesgo que complementa las variables basadas en precios (<code class="docutils literal notranslate"><span class="pre">Volatility</span></code>, <code class="docutils literal notranslate"><span class="pre">AbsReturn</span></code>, <code class="docutils literal notranslate"><span class="pre">lag_1</span></code> a <code class="docutils literal notranslate"><span class="pre">lag_28</span></code>) y permite al modelo aprender patrones más ricos de comportamiento temporal.<br />
-La variable será escalada junto con el resto del conjunto de entrenamiento y evaluada en la etapa de validación para confirmar su impacto en el desempeño predictivo.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Volatilidad condicional estimada (desviación estándar diaria)</span>
-<span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Volatilidad_GARCH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">garch_fit</span><span class="o">.</span><span class="n">conditional_volatility</span>
-
-<span class="c1"># Gráfico de la volatilidad estimada</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Volatilidad_GARCH&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#6a0dad&#39;</span><span class="p">)</span>  <span class="c1"># tono púrpura</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Volatilidad condicional estimada por GARCH(1,1)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fecha&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Volatilidad diaria (σ)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/c264c825d674b48addf62b360cf4c0107159ad008fe18416b0e9c113d7ca3c91.png" src="_images/c264c825d674b48addf62b360cf4c0107159ad008fe18416b0e9c113d7ca3c91.png" />
-</div>
-</div>
-<p>El gráfico muestra la evolución diaria de la <strong>volatilidad condicional</strong> estimada mediante el modelo GARCH(1,1), aplicado sobre los retornos logarítmicos de BTC.</p>
-<p>Se observan <strong>picos pronunciados de volatilidad</strong> en momentos de alta incertidumbre, especialmente alrededor de 2020, lo que coincide con eventos macroeconómicos globales y fuertes movimientos en el precio de BTC.<br />
-A partir de 2021, la volatilidad muestra una <strong>tendencia descendente y más estable</strong>, aunque persisten fluctuaciones moderadas hasta 2025. Esta dinámica sugiere que el mercado de BTC ha madurado parcialmente, con menor sensibilidad a shocks extremos.</p>
-<p>Esta serie condicional valida la presencia de <strong>volatilidad persistente y estructurada</strong>, lo que justifica el uso de modelos con memoria temporal como el MLP. Además, sirve como <strong>benchmark estadístico</strong> para evaluar si el modelo de red neuronal logra capturar patrones similares o más complejos.</p>
-</section>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="generacion-de-features">
-<h1><strong>Generación de features</strong><a class="headerlink" href="#generacion-de-features" title="Link to this heading">#</a></h1>
-<section id="a-lags-del-precio">
-<h2><em>a. Lags del precio</em><a class="headerlink" href="#a-lags-del-precio" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear lags del precio</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">):</span>
-    <span class="n">btc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;lag_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<blockquote>
-<div><p>Se generan variables de <strong>retardo (<code class="docutils literal notranslate"><span class="pre">lag</span></code>)</strong> del precio de cierre de BTC desde 1 hasta 28 días atrás. Estas variables permiten capturar la <strong>dependencia temporal</strong> del mercado, es decir, cómo el comportamiento pasado influye en la dinámica actual.</p>
-<p>La elección de <strong>28 días</strong> como límite superior responde a la estructura mensual del mercado, alineándose con la ventana usada en la volatilidad realizada (<code class="docutils literal notranslate"><span class="pre">rolling.std</span></code>) y en las medias móviles. Esto asegura coherencia metodológica y suficiente profundidad temporal sin introducir ruido excesivo.</p>
-<p>Estas variables enriquecen el modelo con señales de momentum, reversión y persistencia, y pueden ser combinadas con medias móviles y volatilidad para mejorar la capacidad predictiva.</p>
-</div></blockquote>
-<section id="visualizacion-de-corrrelaciones-entre-lags-y-target">
-<h3><em>Visualización de corrrelaciones entre lags y target</em><a class="headerlink" href="#visualizacion-de-corrrelaciones-entre-lags-y-target" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Correlación entre lags y precio futuro (ejemplo: target_t+1)</span>
-<span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[[</span><span class="sa">f</span><span class="s1">&#39;lag_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
-    <span class="n">corr_matrix</span><span class="p">[[</span><span class="s1">&#39;Close&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
-    <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Purples&#39;</span><span class="p">,</span>      <span class="c1"># paleta purples</span>
-    <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>      <span class="c1"># separaciones entre celdas</span>
-    <span class="n">linecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
-    <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.2f&#39;</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Correlación entre lags y precio actual&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/a9d1d275d87ef75f3ae6b8419db04572d74e4a48fdb7a4c6b55e7b7bf3815376.png" src="_images/a9d1d275d87ef75f3ae6b8419db04572d74e4a48fdb7a4c6b55e7b7bf3815376.png" />
-</div>
-</div>
-<p>El análisis de correlación entre los lags del precio y el valor actual (<strong>Close</strong>) muestra una <strong>disminución progresiva</strong> en la fuerza de la relación conforme aumenta el desfase temporal. Los primeros lags (lag_1 a lag_7) presentan correlaciones superiores a 0.99, lo que indica que el precio de BTC tiene una <strong>estructura temporal fuerte a corto plazo</strong>.</p>
-<p>Este patrón valida el uso de <strong>lags recientes como features predictivos</strong>, mientras que los lags más lejanos pueden aportar ruido si no se combinan con agregaciones, como medias móviles. También sugiere que el modelo puede beneficiarse de una <strong>arquitectura que priorice la memoria corta</strong>, por ejemplo un MLP con atención o pesos diferenciados por lag.</p>
-<p>Dado que el precio y la volatilidad tienen <strong>dinámicas distintas pero interrelacionadas</strong>, se justifica el uso de un <strong>modelo multisalida</strong> que prediga los objetivos:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">target_price_t+1</span></code> a <code class="docutils literal notranslate"><span class="pre">target_price_t+7</span></code>, para capturar la dirección del mercado.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">target_volatility_t+1</span></code> a <code class="docutils literal notranslate"><span class="pre">target_volatility_t+7</span></code>, para anticipar el nivel de riesgo.</p></li>
-</ul>
-<p>Este enfoque permite construir un sistema de predicción más completo, útil tanto para decisiones de inversión como para la gestión de portafolios.</p>
-</section>
-</section>
-<section id="b-lags-de-volatilidad-garch">
-<h2><em>b. Lags de volatilidad GARCH</em><a class="headerlink" href="#b-lags-de-volatilidad-garch" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">29</span><span class="p">):</span>
-    <span class="n">btc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;garch_lag_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Volatilidad_GARCH&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="c-targets-multi-step">
-<h2><em>c. Targets multi-step</em><a class="headerlink" href="#c-targets-multi-step" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear targets de volatilidad para los próximos 7 días</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
-    <span class="n">btc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;target_volatility_t+</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Volatilidad_21d&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<p>Se crean variables objetivo (<strong><code class="docutils literal notranslate"><span class="pre">target_volatility_t+1</span></code> a <code class="docutils literal notranslate"><span class="pre">target_volatility_t+7</span></code></strong>) que representan la volatilidad futura de BTC en horizontes de 1 a 7 días.</p>
-<p>Esta estrategia permite entrenar modelos supervisados que anticipen el nivel de riesgo (volatilidad) del mercado en distintos plazos, desde el corto plazo (1 día) hasta una semana completa. Esto es fundamental para distintos perfiles de decisión, como el <strong>trading de derivados</strong>, la <strong>gestión de riesgo</strong> y la <strong>optimización de portafolios</strong>.</p>
-<p>La estructura multihorizonte también permite:</p>
-<ul class="simple">
-<li><p><strong>Evaluar</strong> la capacidad de generalización del modelo en distintos marcos temporales.</p></li>
-<li><p><strong>Comparar</strong> el rendimiento predictivo según el horizonte (por ejemplo, si el modelo es más preciso en <em>t+1</em> que en <em>t+7</em>).</p></li>
-<li><p><strong>Diseñar</strong> arquitecturas que predigan múltiples salidas simultáneamente (<em>multi-output MLP</em>), o entrenar modelos independientes por horizonte.</p></li>
-</ul>
-<p>En conclusión, esta formulación es coherente con el enfoque temporal del proyecto y permite una <strong>evaluación más rica del desempeño</strong> del modelo en escenarios reales de gestión de riesgo y toma de decisiones tácticas.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-
-<span class="c1"># Paleta de colores diferenciados para cada horizonte</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#e74c3c&#39;</span><span class="p">,</span> <span class="s1">&#39;#f39c12&#39;</span><span class="p">,</span> <span class="s1">&#39;#27ae60&#39;</span><span class="p">,</span> <span class="s1">&#39;#2980b9&#39;</span><span class="p">,</span> <span class="s1">&#39;#8e44ad&#39;</span><span class="p">,</span> <span class="s1">&#39;#16a085&#39;</span><span class="p">,</span> <span class="s1">&#39;#d35400&#39;</span><span class="p">]</span>
-
-<span class="c1"># Graficar cada horizonte con su color correspondiente</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">btc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;target_volatility_t+</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t+</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
-
-<span class="c1"># Estética</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Comportamiento de precios futuros (t+1 a t+7)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Fecha&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Precio (USD)&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Horizonte&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/d4970aeab09a4fb7371d86d588fa9d9ff5e8fa99ef0f833fa5f387bd91ead743.png" src="_images/d4970aeab09a4fb7371d86d588fa9d9ff5e8fa99ef0f833fa5f387bd91ead743.png" />
-</div>
-</div>
-<p>Se observa que todas las curvas siguen la estructura general de la volatilidad original, pero con <strong>desplazamientos temporales</strong> que reflejan la anticipación de cada horizonte.</p>
-<ul class="simple">
-<li><p>Los horizontes más cortos (<code class="docutils literal notranslate"><span class="pre">t+1</span></code>, <code class="docutils literal notranslate"><span class="pre">t+2</span></code>) se mantienen cercanos a la volatilidad actual, capturando microvariaciones.</p></li>
-<li><p>A medida que el horizonte se amplía (<code class="docutils literal notranslate"><span class="pre">t+5</span></code>, <code class="docutils literal notranslate"><span class="pre">t+7</span></code>), las curvas se suavizan y divergen ligeramente, lo que refleja mayor incertidumbre y menor precisión en la proyección.</p></li>
-</ul>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear tabla de métricas de dispersión</span>
-<span class="n">dispersion_metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Horizonte&#39;</span><span class="p">,</span> <span class="s1">&#39;Desviación estándar&#39;</span><span class="p">,</span> <span class="s1">&#39;Rango&#39;</span><span class="p">])</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
-    <span class="n">diff</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;target_volatility_t+</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">btc</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]</span>
-    <span class="n">dispersion_metrics</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="sa">f</span><span class="s1">&#39;t+</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-        <span class="n">diff</span><span class="o">.</span><span class="n">std</span><span class="p">(),</span>
-        <span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">diff</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-    <span class="p">]</span>
-
-<span class="c1"># Redondear y aplicar estilo</span>
-<span class="n">dispersion_metrics</span> <span class="o">=</span> <span class="n">dispersion_metrics</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">styled_dispersion</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">dispersion_metrics</span><span class="o">.</span><span class="n">style</span>
-    <span class="o">.</span><span class="n">background_gradient</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Desviación estándar&#39;</span><span class="p">,</span> <span class="s1">&#39;Rango&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Purples&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">set_properties</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;text-align&#39;</span><span class="p">:</span> <span class="s1">&#39;left&#39;</span><span class="p">})</span>
-<span class="p">)</span>
-<span class="n">styled_dispersion</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><style type="text/css">
-#T_a0481_row0_col0, #T_a0481_row1_col0, #T_a0481_row2_col0, #T_a0481_row3_col0, #T_a0481_row4_col0, #T_a0481_row5_col0, #T_a0481_row6_col0 {
-  text-align: left;
-}
-#T_a0481_row0_col1, #T_a0481_row6_col2 {
-  background-color: #3f007d;
-  color: #f1f1f1;
-  text-align: left;
-}
-#T_a0481_row0_col2 {
-  background-color: #f1eff6;
-  color: #000000;
-  text-align: left;
-}
-#T_a0481_row1_col1 {
-  background-color: #593093;
-  color: #f1f1f1;
-  text-align: left;
-}
-#T_a0481_row1_col2 {
-  background-color: #9e9bc8;
-  color: #f1f1f1;
-  text-align: left;
-}
-#T_a0481_row2_col1 {
-  background-color: #786db2;
-  color: #f1f1f1;
-  text-align: left;
-}
-#T_a0481_row2_col2, #T_a0481_row4_col2 {
-  background-color: #8380bb;
-  color: #f1f1f1;
-  text-align: left;
-}
-#T_a0481_row3_col1 {
-  background-color: #9793c5;
-  color: #f1f1f1;
-  text-align: left;
-}
-#T_a0481_row3_col2, #T_a0481_row6_col1 {
-  background-color: #fcfbfd;
-  color: #000000;
-  text-align: left;
-}
-#T_a0481_row4_col1 {
-  background-color: #bfc0de;
-  color: #000000;
-  text-align: left;
-}
-#T_a0481_row5_col1 {
-  background-color: #e5e4f0;
-  color: #000000;
-  text-align: left;
-}
-#T_a0481_row5_col2 {
-  background-color: #6f5ba8;
-  color: #f1f1f1;
-  text-align: left;
-}
-</style>
-<table id="T_a0481">
-  <thead>
-    <tr>
-      <th class="blank level0" >&nbsp;</th>
-      <th id="T_a0481_level0_col0" class="col_heading level0 col0" >Horizonte</th>
-      <th id="T_a0481_level0_col1" class="col_heading level0 col1" >Desviación estándar</th>
-      <th id="T_a0481_level0_col2" class="col_heading level0 col2" >Rango</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th id="T_a0481_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_a0481_row0_col0" class="data row0 col0" >t+1</td>
-      <td id="T_a0481_row0_col1" class="data row0 col1" >23594.160000</td>
-      <td id="T_a0481_row0_col2" class="data row0 col2" >102932.360000</td>
-    </tr>
-    <tr>
-      <th id="T_a0481_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_a0481_row1_col0" class="data row1 col0" >t+2</td>
-      <td id="T_a0481_row1_col1" class="data row1 col1" >23557.770000</td>
-      <td id="T_a0481_row1_col2" class="data row1 col2" >102932.430000</td>
-    </tr>
-    <tr>
-      <th id="T_a0481_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_a0481_row2_col0" class="data row2 col0" >t+3</td>
-      <td id="T_a0481_row2_col1" class="data row2 col1" >23517.240000</td>
-      <td id="T_a0481_row2_col2" class="data row2 col2" >102932.450000</td>
-    </tr>
-    <tr>
-      <th id="T_a0481_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_a0481_row3_col0" class="data row3 col0" >t+4</td>
-      <td id="T_a0481_row3_col1" class="data row3 col1" >23484.580000</td>
-      <td id="T_a0481_row3_col2" class="data row3 col2" >102932.340000</td>
-    </tr>
-    <tr>
-      <th id="T_a0481_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_a0481_row4_col0" class="data row4 col0" >t+5</td>
-      <td id="T_a0481_row4_col1" class="data row4 col1" >23445.840000</td>
-      <td id="T_a0481_row4_col2" class="data row4 col2" >102932.450000</td>
-    </tr>
-    <tr>
-      <th id="T_a0481_level0_row5" class="row_heading level0 row5" >5</th>
-      <td id="T_a0481_row5_col0" class="data row5 col0" >t+6</td>
-      <td id="T_a0481_row5_col1" class="data row5 col1" >23404.110000</td>
-      <td id="T_a0481_row5_col2" class="data row5 col2" >102932.470000</td>
-    </tr>
-    <tr>
-      <th id="T_a0481_level0_row6" class="row_heading level0 row6" >6</th>
-      <td id="T_a0481_row6_col0" class="data row6 col0" >t+7</td>
-      <td id="T_a0481_row6_col1" class="data row6 col1" >23361.260000</td>
-      <td id="T_a0481_row6_col2" class="data row6 col2" >102932.520000</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
-<p>La siguiente tabla muestra cómo varía la <strong>desviación estándar</strong> y el <strong>rango absoluto</strong> de los valores de volatilidad futura (<code class="docutils literal notranslate"><span class="pre">target_volatility_t+1</span></code> a <code class="docutils literal notranslate"><span class="pre">target_volatility_t+7</span></code>) generados a partir del histórico de precios de cierre (<code class="docutils literal notranslate"><span class="pre">Close</span></code>). Aquí se evidencia una <strong>tendencia ligeramente decreciente en la dispersión</strong> conforme se amplía el horizonte de predicción:</p>
-<ul class="simple">
-<li><p>En <strong>t+1</strong>, la desviación estándar es de <strong><span class="math notranslate nohighlight">\(23,345**, con un rango de **\)</span>102,931</strong>, lo que refleja una <strong>alta variabilidad</strong> en la estimación de riesgo inmediato.</p></li>
-<li><p>En <strong>t+7</strong>, la desviación estándar desciende a <strong><span class="math notranslate nohighlight">\(23,093**, mientras el rango se mantiene prácticamente constante (**\)</span>102,932</strong>), lo que sugiere una <strong>estabilización en los extremos</strong> pero una <strong>leve compresión en la dispersión central</strong>.</p></li>
-</ul>
-<p>Este comportamiento indica que, aunque los valores extremos de volatilidad se mantienen similares en todos los horizontes, la <strong>incertidumbre interna del modelo disminuye ligeramente con el tiempo</strong>. Esto puede deberse a:</p>
-<ol class="arabic simple">
-<li><p><strong>Efectos de suavización</strong> en los cálculos de volatilidad (<em>rolling windows</em>).</p></li>
-<li><p><strong>Redundancia temporal</strong> entre horizontes cercanos.</p></li>
-<li><p><strong>Persistencia estructural</strong> en la dinámica de riesgo de BTC.</p></li>
-</ol>
 </section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="conclusiones-del-eda">
 <h1><strong>Conclusiones del EDA</strong><a class="headerlink" href="#conclusiones-del-eda" title="Link to this heading">#</a></h1>
-<section id="hallazgos-clave-del-eda-y-su-influencia-en-el-diseno-del-modelo">
-<h2>Hallazgos Clave del EDA y su Influencia en el Diseño del Modelo<a class="headerlink" href="#hallazgos-clave-del-eda-y-su-influencia-en-el-diseno-del-modelo" title="Link to this heading">#</a></h2>
-<p>El Análisis Exploratorio de Datos (EDA) reveló características fundamentales sobre la dinámica del precio y la volatilidad de Bitcoin. Estos hallazgos no son solo descriptivos, sino que informan y justifican directamente las decisiones de arquitectura, selección de features y evaluación del modelo de Machine Learning.</p>
-<section id="hallazgo-1-distribucion-no-normal-y-colas-pesadas-en-los-retornos">
-<h3>📊 Hallazgo 1: Distribución No Normal y Colas Pesadas en los Retornos<a class="headerlink" href="#hallazgo-1-distribucion-no-normal-y-colas-pesadas-en-los-retornos" title="Link to this heading">#</a></h3>
-<p><strong>Evidencia:</strong><br />
-El histograma de retornos logarítmicos es leptocúrtico (puntiagudo en el centro) y tiene <em>colas pesadas</em>.</p>
+<section id="caracteristicas-del-precio-y-los-retornos">
+<h2>1. Características del Precio y los Retornos<a class="headerlink" href="#caracteristicas-del-precio-y-los-retornos" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Curtosis = <strong>17.02</strong>, muy superior a 3 (normalidad).</p></li>
-<li><p>Asimetría = <strong>-1.16</strong>, confirmando desviación estadística.</p></li>
-</ul>
-<p><strong>Impacto en el Modelo:</strong></p>
-<ul class="simple">
-<li><p>✅ <strong>Justifica un modelo no lineal</strong>: Un modelo lineal simple asumiría normalidad en los errores y fallaría en capturar eventos extremos. Una Red Neuronal (MLP) es más adecuada.</p></li>
-<li><p>✅ <strong>Métricas de evaluación</strong>: Usar MAE junto con RMSE para evitar sesgo por outliers.</p></li>
-</ul>
-</section>
-<section id="hallazgo-2-agrupamiento-de-volatilidad-volatility-clustering">
-<h3>📈 Hallazgo 2: Agrupamiento de Volatilidad (Volatility Clustering)<a class="headerlink" href="#hallazgo-2-agrupamiento-de-volatilidad-volatility-clustering" title="Link to this heading">#</a></h3>
-<p><strong>Evidencia:</strong></p>
-<ul class="simple">
-<li><p>El gráfico de retornos muestra períodos de alta y baja volatilidad agrupados.</p></li>
-<li><p>El ACF de los retornos al cuadrado confirma autocorrelación persistente.</p></li>
-<li><p>La <strong>prueba de Ljung-Box (p ≈ 0)</strong> valida dependencia significativa en la varianza.</p></li>
-</ul>
-<p><strong>Impacto en el Modelo:</strong></p>
-<ul class="simple">
-<li><p>✅ Es el <strong>pilar del proyecto</strong>: la volatilidad es predecible a partir de su propio pasado.</p></li>
-<li><p>✅ Justifica el uso de features temporales como:</p>
+<li><p><strong>Alta Volatilidad y Ciclos de Mercado</strong>:<br />
+El precio de BTC muestra una volatilidad estructural muy alta, con ciclos alcistas y bajistas bien definidos entre 2018 y 2025.</p></li>
+<li><p><strong>Distribución No Normal de Retornos</strong>:<br />
+Los retornos logarítmicos diarios no siguen una distribución normal, presentando:</p>
 <ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Volatility</span> <span class="pre">(histórica)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Volatilidad_GARCH</span> <span class="pre">(condicional)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">AbsReturn</span></code></p></li>
+<li><p><strong>Asimetría Negativa</strong>: Con un valor de <code class="docutils literal notranslate"><span class="pre">-1.16</span></code>, indica que las caídas abruptas son más frecuentes o intensas que las subidas.</p></li>
+<li><p><strong>Colas Pesadas (Leptocurtosis)</strong>: La curtosis de <code class="docutils literal notranslate"><span class="pre">17.02</span></code> (muy superior a 3) revela una alta probabilidad de eventos extremos (“cisnes negros”), los cuales se correlacionan directamente con noticias del mundo real.</p></li>
 </ul>
 </li>
 </ul>
 </section>
-<section id="hallazgo-3-fuerte-persistencia-del-precio-a-corto-plazo">
-<h3>📉 Hallazgo 3: Fuerte Persistencia del Precio a Corto Plazo<a class="headerlink" href="#hallazgo-3-fuerte-persistencia-del-precio-a-corto-plazo" title="Link to this heading">#</a></h3>
-<p><strong>Evidencia:</strong></p>
+<section id="comportamiento-de-la-volatilidad-hallazgo-clave">
+<h2>2. Comportamiento de la Volatilidad (Hallazgo Clave)<a class="headerlink" href="#comportamiento-de-la-volatilidad-hallazgo-clave" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>El heatmap de correlación muestra que <code class="docutils literal notranslate"><span class="pre">lag_1</span></code> a <code class="docutils literal notranslate"><span class="pre">lag_7</span></code> tienen correlación <strong>&gt;0.99</strong> con el precio actual (<code class="docutils literal notranslate"><span class="pre">Close</span></code>).</p></li>
-</ul>
-<p><strong>Impacto en el Modelo:</strong></p>
-<ul class="simple">
-<li><p>✅ Valida el uso de <strong>ventanas temporales (lags)</strong>.</p></li>
-<li><p>✅ La ventana de <strong>28 lags</strong> es adecuada.</p></li>
-<li><p>✅ Arquitecturas que den mayor peso a lags recientes (atención, RNNs) serían útiles, aunque aquí se use un MLP.</p></li>
-</ul>
-</section>
-<section id="hallazgo-4-mayor-incertidumbre-en-horizontes-largos">
-<h3>🔮 Hallazgo 4: Mayor Incertidumbre en Horizontes Largos<a class="headerlink" href="#hallazgo-4-mayor-incertidumbre-en-horizontes-largos" title="Link to this heading">#</a></h3>
-<p><strong>Evidencia:</strong></p>
-<ul class="simple">
-<li><p>Los targets multi-paso (<code class="docutils literal notranslate"><span class="pre">target_volatility_t+1</span></code> a <code class="docutils literal notranslate"><span class="pre">t+7</span></code>) muestran dispersión decreciente (mayor desviación estándar y rango).</p></li>
-</ul>
-<p><strong>Impacto en el Modelo:</strong></p>
-<ul class="simple">
-<li><p>✅ Justifica <strong>arquitectura de salida múltiple</strong>: predecir 7 días de volatilidad en simultáneo.</p></li>
-<li><p>✅ Expectativa clara: mayor precisión en horizontes cortos (t+1, t+2) y menor en los largos (t+6, t+7).</p></li>
-<li><p>✅ Evaluación debe ser por día del horizonte, no solo promedio.</p></li>
-</ul>
-</section>
-<section id="hallazgo-5-impacto-de-eventos-externos-no-capturados">
-<h3>📰 Hallazgo 5: Impacto de Eventos Externos No Capturados<a class="headerlink" href="#hallazgo-5-impacto-de-eventos-externos-no-capturados" title="Link to this heading">#</a></h3>
-<p><strong>Evidencia:</strong></p>
-<ul class="simple">
-<li><p>Los picos extremos coinciden con eventos macroeconómicos o sectoriales:</p>
+<li><p><strong>Agrupamiento de Volatilidad (Volatility Clustering)</strong>:<br />
+Es el descubrimiento más importante. Períodos de alta volatilidad tienden a ser seguidos por más días volátiles, y períodos de calma son seguidos por más calma.</p></li>
+<li><p><strong>Confirmación Estadística</strong>:<br />
+El fenómeno se confirma visualmente y, de forma más robusta, mediante:</p>
 <ul>
-<li><p>COVID-19</p></li>
-<li><p>Prohibiciones en China</p></li>
-<li><p>Colapsos de exchanges</p></li>
-</ul>
-</li>
-</ul>
-<p><strong>Impacto en el Modelo:</strong></p>
-<ul class="simple">
-<li><p>✅ Define los <strong>límites del modelo</strong>: con datos de precios no puede anticipar “cisnes negros”.</p></li>
-<li><p>✅ Futuras mejoras podrían incluir:</p>
-<ul>
-<li><p>Índices macroeconómicos</p></li>
-<li><p>Análisis de sentimiento en noticias</p></li>
-<li><p>Datos <em>on-chain</em></p></li>
+<li><p><strong>ACF de Retornos al Cuadrado</strong>: Muestra una correlación significativa y persistente, indicando que la volatilidad de un día depende de la de los días anteriores.</p></li>
+<li><p><strong>Prueba de Ljung-Box</strong>: Con un <em>p-valor</em> de <code class="docutils literal notranslate"><span class="pre">2.2e-07</span></code> para los retornos al cuadrado, se confirma estadísticamente la presencia de heterocedasticidad (varianza no constante).</p></li>
 </ul>
 </li>
 </ul>
 </section>
-</section>
-<hr class="docutils" />
-<section id="variables-seleccionadas-para-el-modelo">
-<h2>Variables seleccionadas para el modelo<a class="headerlink" href="#variables-seleccionadas-para-el-modelo" title="Link to this heading">#</a></h2>
-<p><strong>Features temporales:</strong></p>
+<section id="autocorrelacion-de-las-series">
+<h2>3. Autocorrelación de las Series<a class="headerlink" href="#autocorrelacion-de-las-series" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Precio de cierre (<code class="docutils literal notranslate"><span class="pre">Close</span></code>)</p></li>
-<li><p>Medias móviles (<code class="docutils literal notranslate"><span class="pre">mean_7</span></code>, <code class="docutils literal notranslate"><span class="pre">mean_14</span></code>, <code class="docutils literal notranslate"><span class="pre">mean_21</span></code>, <code class="docutils literal notranslate"><span class="pre">mean_28</span></code>)</p></li>
-<li><p>Lags del precio (<code class="docutils literal notranslate"><span class="pre">lag_1</span></code> a <code class="docutils literal notranslate"><span class="pre">lag_28</span></code>)</p></li>
-<li><p>Retornos logarítmicos (<code class="docutils literal notranslate"><span class="pre">LogReturn</span></code>)</p></li>
-<li><p>Volatilidad histórica (<code class="docutils literal notranslate"><span class="pre">Volatility</span></code>)</p></li>
-<li><p>Volatilidad condicional (<code class="docutils literal notranslate"><span class="pre">GARCH_vol</span></code>)</p></li>
+<li><p><strong>Retornos (Precio)</strong>: Presentan una autocorrelación muy baja, cercana a un comportamiento de ruido blanco, lo que respalda la hipótesis de eficiencia del mercado.</p></li>
+<li><p><strong>Volatilidad (Retornos al Cuadrado)</strong>: Muestra una dependencia temporal fuerte y clara, lo que la convierte en una variable predecible y un objetivo ideal para el modelado.</p></li>
 </ul>
-<p><strong>Targets supervisados:</strong></p>
+</section>
+<section id="implicaciones-para-el-modelado">
+<h2>4. Implicaciones para el Modelado<a class="headerlink" href="#implicaciones-para-el-modelado" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Volatilidad futura (<code class="docutils literal notranslate"><span class="pre">target__volatility_t+1</span></code> a <code class="docutils literal notranslate"><span class="pre">target_volatility_t+7</span></code>)</p></li>
+<li><p><strong>Objetivo del Modelo</strong>: El EDA justifica plenamente la decisión de modelar y predecir la volatilidad en lugar del precio.</p></li>
+<li><p><strong>Métricas de Evaluación</strong>: La naturaleza no normal de los retornos sugiere el uso de métricas robustas como <strong>MAE</strong> y <strong>MAPE</strong>.</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btc</span> <span class="o">=</span> <span class="n">btc</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">btc</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">,</span> <span class="s1">&#39;LogReturn&#39;</span><span class="p">]</span>
+<span class="n">features</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Volatilidad_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">d&#39;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">28</span><span class="p">]]</span>
+
+<span class="n">df_final</span> <span class="o">=</span> <span class="n">btc</span><span class="p">[</span><span class="n">features</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">df_final</span>
 </pre></div>
 </div>
 </div>
@@ -2449,149 +2022,68 @@ El histograma de retornos logarítmicos es leptocúrtico (puntiagudo en el centr
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>Date</th>
       <th>Close</th>
       <th>LogReturn</th>
-      <th>Year</th>
       <th>Volatilidad_7d</th>
       <th>Volatilidad_14d</th>
       <th>Volatilidad_21d</th>
       <th>Volatilidad_28d</th>
-      <th>AbsReturn</th>
-      <th>Volatilidad_GARCH</th>
-      <th>...</th>
-      <th>garch_lag_26</th>
-      <th>garch_lag_27</th>
-      <th>garch_lag_28</th>
-      <th>target_volatility_t+1</th>
-      <th>target_volatility_t+2</th>
-      <th>target_volatility_t+3</th>
-      <th>target_volatility_t+4</th>
-      <th>target_volatility_t+5</th>
-      <th>target_volatility_t+6</th>
-      <th>target_volatility_t+7</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>2018-01-30</td>
+      <th>2018-01-29</th>
+      <td>11251.00</td>
+      <td>-0.054395</td>
+      <td>0.690572</td>
+      <td>1.522041</td>
+      <td>1.371132</td>
+      <td>1.367343</td>
+    </tr>
+    <tr>
+      <th>2018-01-30</th>
       <td>10237.51</td>
       <td>-0.094399</td>
-      <td>2018</td>
       <td>1.005329</td>
       <td>1.143258</td>
       <td>1.410198</td>
       <td>1.351515</td>
-      <td>0.094399</td>
-      <td>5.342028</td>
-      <td>...</td>
-      <td>6.770376</td>
-      <td>7.212496</td>
-      <td>7.118840</td>
-      <td>1.395937</td>
-      <td>1.383471</td>
-      <td>1.365130</td>
-      <td>1.367026</td>
-      <td>1.419509</td>
-      <td>1.529424</td>
-      <td>1.390784</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>2018-01-31</td>
+      <th>2018-01-31</th>
       <td>10285.10</td>
       <td>0.004638</td>
-      <td>2018</td>
       <td>0.895483</td>
       <td>1.142321</td>
       <td>1.395937</td>
       <td>1.348702</td>
-      <td>0.004638</td>
-      <td>5.807724</td>
-      <td>...</td>
-      <td>6.351502</td>
-      <td>6.770376</td>
-      <td>7.212496</td>
-      <td>1.383471</td>
-      <td>1.365130</td>
-      <td>1.367026</td>
-      <td>1.419509</td>
-      <td>1.529424</td>
-      <td>1.390784</td>
-      <td>1.387261</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>2018-02-01</td>
+      <th>2018-02-01</th>
       <td>9224.52</td>
       <td>-0.108831</td>
-      <td>2018</td>
       <td>1.127962</td>
       <td>1.259500</td>
       <td>1.383471</td>
       <td>1.388793</td>
-      <td>0.108831</td>
-      <td>5.460997</td>
-      <td>...</td>
-      <td>6.936847</td>
-      <td>6.351502</td>
-      <td>6.770376</td>
-      <td>1.365130</td>
-      <td>1.367026</td>
-      <td>1.419509</td>
-      <td>1.529424</td>
-      <td>1.390784</td>
-      <td>1.387261</td>
-      <td>1.396898</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>2018-02-02</td>
+      <th>2018-02-02</th>
       <td>8873.03</td>
       <td>-0.038849</td>
-      <td>2018</td>
       <td>1.117298</td>
       <td>1.223554</td>
       <td>1.365130</td>
       <td>1.292856</td>
-      <td>0.038849</td>
-      <td>6.128761</td>
-      <td>...</td>
-      <td>6.502393</td>
-      <td>6.936847</td>
-      <td>6.351502</td>
-      <td>1.367026</td>
-      <td>1.419509</td>
-      <td>1.529424</td>
-      <td>1.390784</td>
-      <td>1.387261</td>
-      <td>1.396898</td>
-      <td>1.471710</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2018-02-03</td>
-      <td>9199.96</td>
-      <td>0.036183</td>
-      <td>2018</td>
-      <td>1.119406</td>
-      <td>1.054750</td>
-      <td>1.367026</td>
-      <td>1.306446</td>
-      <td>0.036183</td>
-      <td>5.883566</td>
-      <td>...</td>
-      <td>6.337831</td>
-      <td>6.502393</td>
-      <td>6.936847</td>
-      <td>1.419509</td>
-      <td>1.529424</td>
-      <td>1.390784</td>
-      <td>1.387261</td>
-      <td>1.396898</td>
-      <td>1.471710</td>
-      <td>1.370490</td>
     </tr>
     <tr>
       <th>...</th>
@@ -2601,163 +2093,73 @@ El histograma de retornos logarítmicos es leptocúrtico (puntiagudo en el centr
       <td>...</td>
       <td>...</td>
       <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
     </tr>
     <tr>
-      <th>2553</th>
-      <td>2025-01-26</td>
-      <td>102620.00</td>
-      <td>-0.020514</td>
-      <td>2025</td>
-      <td>0.533423</td>
-      <td>0.499937</td>
-      <td>0.527466</td>
-      <td>0.466572</td>
-      <td>0.020514</td>
-      <td>2.954228</td>
-      <td>...</td>
-      <td>2.829802</td>
-      <td>2.893604</td>
-      <td>2.931729</td>
-      <td>0.503066</td>
-      <td>0.448363</td>
-      <td>0.446072</td>
-      <td>0.425368</td>
-      <td>0.433594</td>
-      <td>0.433747</td>
+      <th>2025-02-02</th>
+      <td>99796.00</td>
+      <td>-0.024038</td>
+      <td>0.319643</td>
+      <td>0.426355</td>
       <td>0.448729</td>
+      <td>0.480990</td>
     </tr>
     <tr>
-      <th>2554</th>
-      <td>2025-01-27</td>
-      <td>102082.83</td>
-      <td>-0.005248</td>
-      <td>2025</td>
-      <td>0.523770</td>
-      <td>0.502346</td>
-      <td>0.503066</td>
-      <td>0.465006</td>
-      <td>0.005248</td>
-      <td>2.938288</td>
-      <td>...</td>
-      <td>2.758875</td>
-      <td>2.829802</td>
-      <td>2.893604</td>
-      <td>0.448363</td>
-      <td>0.446072</td>
-      <td>0.425368</td>
-      <td>0.433594</td>
-      <td>0.433747</td>
-      <td>0.448729</td>
+      <th>2025-02-03</th>
+      <td>94495.21</td>
+      <td>-0.054579</td>
+      <td>0.486452</td>
+      <td>0.504795</td>
       <td>0.508193</td>
+      <td>0.498576</td>
     </tr>
     <tr>
-      <th>2555</th>
-      <td>2025-01-28</td>
-      <td>101335.52</td>
-      <td>-0.007348</td>
-      <td>2025</td>
-      <td>0.223991</td>
-      <td>0.498414</td>
-      <td>0.448363</td>
-      <td>0.466193</td>
-      <td>0.007348</td>
-      <td>2.854953</td>
-      <td>...</td>
-      <td>2.702562</td>
-      <td>2.758875</td>
-      <td>2.829802</td>
-      <td>0.446072</td>
-      <td>0.425368</td>
-      <td>0.433594</td>
-      <td>0.433747</td>
-      <td>0.448729</td>
-      <td>0.508193</td>
+      <th>2025-02-04</th>
+      <td>101367.77</td>
+      <td>0.070206</td>
+      <td>0.764874</td>
+      <td>0.545473</td>
       <td>0.581348</td>
+      <td>0.528412</td>
     </tr>
     <tr>
-      <th>2556</th>
-      <td>2025-01-29</td>
-      <td>103733.24</td>
-      <td>0.023386</td>
-      <td>2025</td>
-      <td>0.263235</td>
-      <td>0.470744</td>
-      <td>0.446072</td>
-      <td>0.471284</td>
-      <td>0.023386</td>
-      <td>2.786250</td>
-      <td>...</td>
-      <td>2.731783</td>
-      <td>2.702562</td>
-      <td>2.758875</td>
-      <td>0.425368</td>
-      <td>0.433594</td>
-      <td>0.433747</td>
-      <td>0.448729</td>
-      <td>0.508193</td>
-      <td>0.581348</td>
+      <th>2025-02-05</th>
+      <td>97589.30</td>
+      <td>-0.037987</td>
+      <td>0.779201</td>
+      <td>0.565460</td>
       <td>0.580056</td>
+      <td>0.542300</td>
     </tr>
     <tr>
-      <th>2557</th>
-      <td>2025-01-30</td>
-      <td>104722.94</td>
-      <td>0.009496</td>
-      <td>2025</td>
-      <td>0.272061</td>
-      <td>0.470239</td>
-      <td>0.425368</td>
-      <td>0.464923</td>
-      <td>0.009496</td>
-      <td>2.791715</td>
-      <td>...</td>
-      <td>2.683393</td>
-      <td>2.731783</td>
-      <td>2.702562</td>
-      <td>0.433594</td>
-      <td>0.433747</td>
-      <td>0.448729</td>
-      <td>0.508193</td>
-      <td>0.581348</td>
-      <td>0.580056</td>
+      <th>2025-02-06</th>
+      <td>98329.13</td>
+      <td>0.007552</td>
+      <td>0.776559</td>
+      <td>0.567925</td>
       <td>0.580981</td>
+      <td>0.532689</td>
     </tr>
   </tbody>
 </table>
-<p>2558 rows × 73 columns</p>
+<p>2566 rows × 6 columns</p>
 </div></div></div>
 </div>
-</section>
-<hr class="docutils" />
-<section id="posibles-riesgos-o-sesgos-detectados">
-<h2>Posibles riesgos o sesgos detectados<a class="headerlink" href="#posibles-riesgos-o-sesgos-detectados" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><strong>No normalidad</strong> en los retornos → riesgo de subestimar eventos extremos si se usan métricas inapropiadas.</p></li>
-<li><p><strong>Volatility clustering</strong> → requiere modelado explícito de la varianza para evitar errores sistemáticos.</p></li>
-<li><p><strong>Lag-target overlap</strong> → riesgo de dependencia artificial si no se separan adecuadamente en el dataset.</p></li>
-<li><p><strong>Sesgo temporal</strong> → patrones específicos de ciertos años (e.g., 2020–2021) pueden no generalizar.</p></li>
-<li><p><strong>Eventos exógenos</strong> (COVID, regulaciones, colapsos) → pueden distorsionar el aprendizaje si no se contextualizan.</p></li>
-<li><p><strong>Horizontes largos</strong> → mayor dispersión y menor precisión, lo que exige arquitecturas más robustas y funciones de pérdida adaptadas.</p></li>
-</ul>
-<hr class="docutils" />
-<blockquote>
-<div><p>Este análisis establece una base sólida para el diseño del modelo MLP, con variables relevantes, estructuradas y alineadas con la dinámica temporal del mercado. Las advertencias metodológicas serán consideradas en la etapa de entrenamiento y validación para garantizar robustez y generalización.</p>
-</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nombre_del_archivo</span> <span class="o">=</span> <span class="s2">&quot;btc_final.csv&quot;</span>
+
+<span class="n">df_final</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">nombre_del_archivo</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DataFrame guardado exitosamente como &#39;</span><span class="si">{</span><span class="n">nombre_del_archivo</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>DataFrame guardado exitosamente como &#39;btc_final.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 
@@ -2797,8 +2199,17 @@ El histograma de retornos logarítmicos es leptocúrtico (puntiagudo en el centr
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Introducción</p>
+        <p class="prev-next-title">Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="02_training_model.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><strong>Librerías</strong></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -2843,6 +2254,7 @@ El histograma de retornos logarítmicos es leptocúrtico (puntiagudo en el centr
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volatilidad-de-btc">Volatilidad de BTC</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#histograma-de-precios"><em>Histograma de precios</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#serie-de-retornos"><em>Serie de retornos</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comportamiento-de-los-retornos"><em>Comportamiento de los retornos</em></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#volatilidad-agrupada"><em>Volatilidad agrupada</em></a></li>
@@ -2859,34 +2271,14 @@ El histograma de retornos logarítmicos es leptocúrtico (puntiagudo en el centr
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculo-de-volatilidad-historica"><em>Cálculo de volatilidad histórica</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-volatilidad"><em>Visualización de volatilidad</em></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#precio-vs-volatilidad"><em>Precio vs Volatilidad</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-retorno-absoluto-y-volatilidad"><em>Correlación entre retorno absoluto y volatilidad</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimacion-de-volatilidad-condicional-con-garch-1-1"><em>Estimación de volatilidad condicional con GARCH(1,1)</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#justificacion-del-modelo-garch-1-1">Justificación del modelo GARCH(1,1)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-de-inclusion">Decisión de inclusión</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#generacion-de-features"><strong>Generación de features</strong></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-lags-del-precio"><em>a. Lags del precio</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion-de-corrrelaciones-entre-lags-y-target"><em>Visualización de corrrelaciones entre lags y target</em></a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-lags-de-volatilidad-garch"><em>b. Lags de volatilidad GARCH</em></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-targets-multi-step"><em>c. Targets multi-step</em></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correlacion-entre-retorno-absoluto-y-volatilidad-cada-ventana"><em>Correlación entre retorno absoluto y volatilidad (Cada Ventana)</em></a></li>
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones-del-eda"><strong>Conclusiones del EDA</strong></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos-clave-del-eda-y-su-influencia-en-el-diseno-del-modelo">Hallazgos Clave del EDA y su Influencia en el Diseño del Modelo</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-1-distribucion-no-normal-y-colas-pesadas-en-los-retornos">📊 Hallazgo 1: Distribución No Normal y Colas Pesadas en los Retornos</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-2-agrupamiento-de-volatilidad-volatility-clustering">📈 Hallazgo 2: Agrupamiento de Volatilidad (Volatility Clustering)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-3-fuerte-persistencia-del-precio-a-corto-plazo">📉 Hallazgo 3: Fuerte Persistencia del Precio a Corto Plazo</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-4-mayor-incertidumbre-en-horizontes-largos">🔮 Hallazgo 4: Mayor Incertidumbre en Horizontes Largos</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-5-impacto-de-eventos-externos-no-capturados">📰 Hallazgo 5: Impacto de Eventos Externos No Capturados</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables-seleccionadas-para-el-modelo">Variables seleccionadas para el modelo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posibles-riesgos-o-sesgos-detectados">Posibles riesgos o sesgos detectados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#caracteristicas-del-precio-y-los-retornos">1. Características del Precio y los Retornos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comportamiento-de-la-volatilidad-hallazgo-clave">2. Comportamiento de la Volatilidad (Hallazgo Clave)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#autocorrelacion-de-las-series">3. Autocorrelación de las Series</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implicaciones-para-el-modelado">4. Implicaciones para el Modelado</a></li>
 </ul>
 </li>
 </ul>
@@ -2904,7 +2296,7 @@ El histograma de retornos logarítmicos es leptocúrtico (puntiagudo en el centr
   <div class="footer-item">
     
 <p class="component-author">
-By The Jupyter Book Community
+By Sara Guerra
 </p>
 
   </div>

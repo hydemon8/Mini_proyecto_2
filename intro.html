@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Introducción &#8212; My sample book</title>
+    <title>Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP) &#8212; btc-volatility-mlops</title>
   
   
   
@@ -156,8 +156,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="btc-volatility-mlops - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="btc-volatility-mlops - Home"/>`);</script>
   
   
 </a></div>
@@ -178,7 +178,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    Introducción
+                    Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)
                 </a>
             </li>
         </ul>
@@ -188,6 +188,14 @@
 
 
 
+
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html"><strong>Librerías</strong></a></li>
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="03_residual_analysis.html"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a></li>
 
 
 </ul>
@@ -375,7 +383,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Introducción</h1>
+    <h1>Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -385,10 +393,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-metodologico">Enfoque metodológico</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo">Flujo de trabajo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-financiero">Contexto financiero</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-analisis-de-deep-learning-para-pronosticar-la-volatilidad-diaria-de-btc">Un análisis de Deep Learning para pronosticar la volatilidad diaria de BTC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-y-motivacion-del-proyecto">Contexto y Motivación del Proyecto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-del-notebook">Objetivos del Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-del-modelado">Enfoque del Modelado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultados-principales">Resultados Principales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stack-tecnologico-utilizado">🛠️ Stack Tecnológico Utilizado</a></li>
 </ul>
             </nav>
         </div>
@@ -400,53 +410,57 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="introduccion">
-<h1>Introducción<a class="headerlink" href="#introduccion" title="Link to this heading">#</a></h1>
-<section id="objetivo-general">
-<h2>Objetivo general<a class="headerlink" href="#objetivo-general" title="Link to this heading">#</a></h2>
-<p>Este proyecto tiene como propósito desarrollar un sistema de predicción multisalida para el mercado de Bitcoin, abordando dos tareas complementarias:</p>
-<ol class="arabic simple">
-<li><p><strong>Predicción del precio de cierre diario</strong> en horizontes de corto plazo.</p></li>
-<li><p><strong>Estimación de la volatilidad futura del precio</strong>, como indicador de riesgo.</p></li>
-</ol>
-<p>Ambos modelos se construyen exclusivamente a partir del histórico temporal de precios de cierre (<code class="docutils literal notranslate"><span class="pre">Close</span></code>), sin incorporar variables externas. Esto permite evaluar el poder predictivo de las transformaciones internas del propio activo, manteniendo un enfoque reproducible y realista.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="prediccion-de-volatilidad-de-bitcoin-con-redes-neuronales-mlp">
+<h1>Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)<a class="headerlink" href="#prediccion-de-volatilidad-de-bitcoin-con-redes-neuronales-mlp" title="Link to this heading">#</a></h1>
+<section id="un-analisis-de-deep-learning-para-pronosticar-la-volatilidad-diaria-de-btc">
+<h2>Un análisis de Deep Learning para pronosticar la volatilidad diaria de BTC<a class="headerlink" href="#un-analisis-de-deep-learning-para-pronosticar-la-volatilidad-diaria-de-btc" title="Link to this heading">#</a></h2>
+<p>Este notebook documenta el proceso de <strong>análisis, entrenamiento y validación</strong> de un modelo de <code class="docutils literal notranslate"><span class="pre">Deep</span> <span class="pre">Learning</span></code> para predecir la volatilidad del precio de Bitcoin. El objetivo es construir un sistema robusto basado únicamente en el historial de precios, implementando buenas prácticas para el manejo de series temporales.</p>
 </section>
 <hr class="docutils" />
-<section id="enfoque-metodologico">
-<h2>Enfoque metodológico<a class="headerlink" href="#enfoque-metodologico" title="Link to this heading">#</a></h2>
-<p>La estrategia se basa en:</p>
+<section id="contexto-y-motivacion-del-proyecto">
+<h2>Contexto y Motivación del Proyecto<a class="headerlink" href="#contexto-y-motivacion-del-proyecto" title="Link to this heading">#</a></h2>
+<p>El mercado de Bitcoin se caracteriza por una <strong>volatilidad excepcionalmente alta</strong>, lo que representa tanto un riesgo como una oportunidad. Mientras que predecir el precio exacto es una tarea notoriamente difícil, pronosticar la <strong>magnitud de sus variaciones (la volatilidad)</strong> es un enfoque más estable y fundamental en el análisis cuantitativo.</p>
+<p>Anticipar la volatilidad es clave para:</p>
 <ul class="simple">
-<li><p>Aplicación de <strong>ingeniería de retardos (lags)</strong> y medias móviles como variables explicativas.</p></li>
-<li><p><strong>Validación temporal</strong> mediante particiones secuenciales (<code class="docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code>).</p></li>
-<li><p>Entrenamiento de <strong>redes neuronales MLP multisalida</strong>, adaptadas a series temporales.</p></li>
-<li><p><strong>Análisis riguroso de residuos</strong>, incluyendo pruebas de dependencia no lineal (BDS test).</p></li>
-<li><p>Preparación del modelo para su eventual <strong>despliegue en un entorno MLOps</strong> (API, contenedor, CI/CD).</p></li>
+<li><p>La gestión de riesgo en portafolios.</p></li>
+<li><p>El desarrollo de estrategias de trading algorítmico.</p></li>
+<li><p>La cobertura (<code class="docutils literal notranslate"><span class="pre">hedging</span></code>) contra movimientos de mercado adversos.</p></li>
 </ul>
 </section>
 <hr class="docutils" />
-<section id="flujo-de-trabajo">
-<h2>Flujo de trabajo<a class="headerlink" href="#flujo-de-trabajo" title="Link to this heading">#</a></h2>
+<section id="objetivos-del-notebook">
+<h2>Objetivos del Notebook<a class="headerlink" href="#objetivos-del-notebook" title="Link to this heading">#</a></h2>
+<p>Este trabajo implementa un pipeline de modelado completo y reproducible para:</p>
 <ol class="arabic simple">
-<li><p>Exploración y cálculo de la <strong>volatilidad histórica</strong>.</p></li>
-<li><p>Generación de features temporales derivados de <code class="docutils literal notranslate"><span class="pre">Close</span></code>.</p></li>
-<li><p>Separación de conjuntos de entrenamiento para cada tarea (precio y volatilidad).</p></li>
-<li><p>Entrenamiento y evaluación de modelos independientes.</p></li>
-<li><p>Validación con métricas específicas por tipo de salida.</p></li>
-<li><p>Documentación reproducible y despliegue técnico.</p></li>
+<li><p><strong>Analizar</strong> el comportamiento del precio de cierre diario de BTC.</p></li>
+<li><p><strong>Calcular</strong> la volatilidad histórica a partir de los retornos logarítmicos.</p></li>
+<li><p><strong>Entrenar</strong> un modelo <code class="docutils literal notranslate"><span class="pre">MLPRegressor</span></code> multi-salida para predecir 7 horizontes de volatilidad futuros.</p></li>
+<li><p><strong>Validar</strong> el modelo de forma robusta usando validación cruzada para series temporales (<code class="docutils literal notranslate"><span class="pre">TimeSeriesSplit</span></code>) para evitar el <em>data leakage</em>.</p></li>
+<li><p><strong>Diagnosticar</strong> los residuos del modelo con pruebas estadísticas (como el test BDS) para asegurar que no queda información predecible sin capturar.</p></li>
 </ol>
+<p><strong>Dataset Utilizado:</strong> Histórico de precios diarios BTC/USD (2018–2025) de Binance.</p>
 </section>
 <hr class="docutils" />
-<section id="contexto-financiero">
-<h2>Contexto financiero<a class="headerlink" href="#contexto-financiero" title="Link to this heading">#</a></h2>
-<p>El mercado de Bitcoin se caracteriza por su <strong>alta volatilidad</strong>, lo que representa tanto una oportunidad como un desafío para traders, gestores de portafolio e investigadores financieros.</p>
-<p>Si bien la predicción del precio ha sido históricamente el foco de numerosos modelos, <strong>anticipar la volatilidad</strong> ofrece una ventaja estratégica más robusta en aplicaciones como:</p>
+<section id="enfoque-del-modelado">
+<h2>Enfoque del Modelado<a class="headerlink" href="#enfoque-del-modelado" title="Link to this heading">#</a></h2>
+<p>La estrategia se centra en un modelo <strong>MLP (Perceptrón Multicapa) multi-salida</strong>, que aprende a predecir simultáneamente la volatilidad para los próximos 7, 14, 21 y 28 días.</p>
+<p>Como features de entrada, se utiliza la <strong>ingeniería de retardos (lags)</strong>, es decir, se alimenta al modelo con los valores de volatilidad de los días anteriores para que aprenda los patrones temporales. Se experimenta con distintas ventanas de lags (7, 14, 21 y 28 días) para encontrar el historial óptimo.</p>
+</section>
+<hr class="docutils" />
+<section id="resultados-principales">
+<h2>Resultados Principales<a class="headerlink" href="#resultados-principales" title="Link to this heading">#</a></h2>
+<p>Tras entrenar y evaluar los cuatro modelos, el <strong>modelo que utiliza un lag de 7 días</strong> demostró el mejor rendimiento general en los datos de prueba, alcanzando un <strong>RMSE promedio de 0.2978</strong>.</p>
+<p>A continuación, se muestra un ejemplo de su capacidad predictiva en uno de los folds de validación:</p>
+<p><img alt="Lag 7 mejor fold 2" src="mini-2/serie_temporal_lag7_Mejor_Fold_Fold_2.png" /></p>
+</section>
+<hr class="docutils" />
+<section id="stack-tecnologico-utilizado">
+<h2>🛠️ Stack Tecnológico Utilizado<a class="headerlink" href="#stack-tecnologico-utilizado" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Trading algorítmico</p></li>
-<li><p>Asignación dinámica de portafolios</p></li>
-<li><p>Estrategias de cobertura</p></li>
-<li><p>Estimación de riesgos extremos</p></li>
+<li><p><strong>Análisis y Modelado:</strong> Python, Pandas, NumPy, Scikit-learn</p></li>
+<li><p><strong>Visualización:</strong> Matplotlib, Seaborn</p></li>
+<li><p><strong>Entorno:</strong> Jupyter Notebook</p></li>
 </ul>
-<p>En este sentido, el forecasting de volatilidad —cuando se aborda con <strong>rigor técnico</strong>, <strong>realismo</strong> y <strong>reproducibilidad</strong>— se convierte en una herramienta esencial dentro del análisis cuantitativo moderno aplicado a mercados de criptomonedas.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="01_eda.html"><strong>Análisis Exploratorio de Datos</strong></a></li>
@@ -454,8 +468,16 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="01_eda.html#estadistica-descriptiva"><strong>Estadística descriptiva</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_eda.html#visualizaciones"><strong>Visualizaciones</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_eda.html#preprocesamiento-financiero"><strong>Preprocesamiento financiero</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="01_eda.html#generacion-de-features"><strong>Generación de features</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_eda.html#conclusiones-del-eda"><strong>Conclusiones del EDA</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html"><strong>Librerías</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html#carga-de-datos"><strong>Carga de datos</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html#modelado"><strong>Modelado</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html#resultados-de-las-metricas"><strong>Resultados de las métricas</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html#visualizaciones"><strong>Visualizaciones</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html#diagnostico-de-residuos"><strong>Diagnóstico de residuos</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_residual_analysis.html"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_residual_analysis.html#normalidad-de-residuos"><strong>Normalidad de residuos</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_residual_analysis.html#acf"><strong>ACF</strong></a></li>
 </ul>
 </div>
 </section>
@@ -516,10 +538,12 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivo-general">Objetivo general</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-metodologico">Enfoque metodológico</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flujo-de-trabajo">Flujo de trabajo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-financiero">Contexto financiero</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#un-analisis-de-deep-learning-para-pronosticar-la-volatilidad-diaria-de-btc">Un análisis de Deep Learning para pronosticar la volatilidad diaria de BTC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contexto-y-motivacion-del-proyecto">Contexto y Motivación del Proyecto</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-del-notebook">Objetivos del Notebook</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-del-modelado">Enfoque del Modelado</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resultados-principales">Resultados Principales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stack-tecnologico-utilizado">🛠️ Stack Tecnológico Utilizado</a></li>
 </ul>
   </nav></div>
 
@@ -534,7 +558,7 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By The Jupyter Book Community
+By Sara Guerra
 </p>
 
   </div>

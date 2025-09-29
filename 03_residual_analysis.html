@@ -1,0 +1,1160 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Diagnóstico de los Residuos por Horizonte de Pronóstico &#8212; btc-volatility-mlops</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_residual_analysis';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Librerías" href="02_training_model.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="btc-volatility-mlops - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="btc-volatility-mlops - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Predicción de Volatilidad de Bitcoin con Redes Neuronales (MLP)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_eda.html"><strong>Análisis Exploratorio de Datos</strong></a></li>
+
+
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="02_training_model.html"><strong>Librerías</strong></a></li>
+
+
+
+
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a></li>
+
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F03_residual_analysis.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03_residual_analysis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Diagnóstico de los Residuos por Horizonte de Pronóstico</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-7-y-14-dias-buen-comportamiento">Modelos de 7 y 14 Días — Buen Comportamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-21-y-28-dias-rendimiento-inferior">Modelos de 21 y 28 Días — Rendimiento Inferior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión General</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#normalidad-de-residuos"><strong>Normalidad de residuos</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-14-y-21-dias-residuos-estadisticamente-robustos">Modelos de 14 y 21 Días — Residuos Estadísticamente Robustos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-7-y-28-dias-residuos-no-normales">Modelos de 7 y 28 Días — Residuos No Normales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sintesis-precision-vs-normalidad">Síntesis: Precisión vs. Normalidad</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#acf"><strong>ACF</strong></a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">joblib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">normaltest</span><span class="p">,</span> <span class="n">shapiro</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.graphics.tsaplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_acf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">statsmodels.tsa.stattools</span><span class="w"> </span><span class="kn">import</span> <span class="n">bds</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lags</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">28</span><span class="p">]</span>
+<span class="n">residuals_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">for</span> <span class="n">lag</span> <span class="ow">in</span> <span class="n">lags</span><span class="p">:</span>
+    <span class="n">bundle</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;../app/model_lag</span><span class="si">{</span><span class="n">lag</span><span class="si">}</span><span class="s2">.joblib&quot;</span><span class="p">)</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">bundle</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;reals&quot;</span><span class="p">])</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;preds&quot;</span><span class="p">])</span>
+    <span class="n">residuals</span> <span class="o">=</span> <span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span>
+    <span class="n">residuals_dict</span><span class="p">[</span><span class="n">lag</span><span class="p">]</span> <span class="o">=</span> <span class="n">residuals</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="diagnostico-de-los-residuos-por-horizonte-de-pronostico">
+<h1><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong><a class="headerlink" href="#diagnostico-de-los-residuos-por-horizonte-de-pronostico" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">lag</span><span class="p">,</span> <span class="n">residuals</span> <span class="ow">in</span> <span class="n">residuals_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">residuals</span><span class="p">[:,</span> <span class="n">h</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Horizonte </span><span class="si">{</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Residuos por horizonte - Lag </span><span class="si">{</span><span class="n">lag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Observación&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Error (y_true - y_pred)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a97f0d2d4bc770355925bfef854b3dc35caa1163b5730adcb0fd937c24933686.png" src="_images/a97f0d2d4bc770355925bfef854b3dc35caa1163b5730adcb0fd937c24933686.png" />
+<img alt="_images/28bff098a04f62bb5e89954d1bbb9cbd30ebd49886c34949f930523c79b53964.png" src="_images/28bff098a04f62bb5e89954d1bbb9cbd30ebd49886c34949f930523c79b53964.png" />
+<img alt="_images/674e871b45b2e2331e94e6c49e5566691babbbac948551aa8c02a4736774458c.png" src="_images/674e871b45b2e2331e94e6c49e5566691babbbac948551aa8c02a4736774458c.png" />
+<img alt="_images/83e686157e6080932daa3e850a400146b1fd98ae6c797e2ab6204ad99ce01482.png" src="_images/83e686157e6080932daa3e850a400146b1fd98ae6c797e2ab6204ad99ce01482.png" />
+</div>
+</div>
+<p>El objetivo de estos gráficos es evaluar si los errores (<strong>residuos</strong>) de cada modelo se comportan de manera aleatoria a lo largo del tiempo. Un buen modelo debería mostrar residuos que oscilen alrededor de cero sin patrones sistemáticos.</p>
+<section id="modelos-de-7-y-14-dias-buen-comportamiento">
+<h2>Modelos de 7 y 14 Días — Buen Comportamiento<a class="headerlink" href="#modelos-de-7-y-14-dias-buen-comportamiento" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Los residuos están centrados en <strong>cero</strong> y fluctúan de forma aparentemente aleatoria.</p></li>
+<li><p>No se observan <strong>tendencias ni ciclos evidentes</strong>.</p></li>
+<li><p>Indican que estos modelos han capturado con éxito la estructura predecible de la serie, dejando solo <strong>ruido blanco</strong>.</p></li>
+</ul>
+</section>
+<section id="modelos-de-21-y-28-dias-rendimiento-inferior">
+<h2>Modelos de 21 y 28 Días — Rendimiento Inferior<a class="headerlink" href="#modelos-de-21-y-28-dias-rendimiento-inferior" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>La magnitud de los errores es <strong>visiblemente mayor</strong>.</p></li>
+<li><p>Los residuos muestran <strong>agrupamiento (clustering)</strong>: períodos de errores grandes tienden a ocurrir juntos.</p></li>
+<li><p>Esto refleja una incapacidad para capturar completamente la dinámica de la volatilidad, dejando <strong>patrones predecibles</strong> en los errores.</p></li>
+</ul>
+</section>
+<section id="conclusion-general">
+<h2>Conclusión General<a class="headerlink" href="#conclusion-general" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Los modelos con <strong>lags de 7 y 14 días</strong> son los más <strong>robustos y bien especificados</strong>:</p>
+<ul>
+<li><p>Menor error promedio (según métricas de RMSE).</p></li>
+<li><p>Residuos más aleatorios y consistentes con ruido blanco.</p></li>
+</ul>
+</li>
+<li><p>En contraste, los modelos de <strong>21 y 28 días</strong> muestran deficiencias en su ajuste y dejan señales no captu</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rmse_summary</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">lag</span><span class="p">,</span> <span class="n">residuals</span> <span class="ow">in</span> <span class="n">residuals_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">residuals</span><span class="p">[:,</span> <span class="n">h</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">rmse_summary</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;Lag&quot;</span><span class="p">:</span> <span class="n">lag</span><span class="p">,</span>
+            <span class="s2">&quot;Horizonte&quot;</span><span class="p">:</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;RMSE&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">rmse</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="p">})</span>
+
+<span class="n">rmse_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rmse_summary</span><span class="p">)</span>
+<span class="n">rmse_df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;Lag&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;Horizonte&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s2">&quot;RMSE&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Horizonte</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+    </tr>
+    <tr>
+      <th>Lag</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>0.1823</td>
+      <td>0.1647</td>
+      <td>0.2059</td>
+      <td>0.2412</td>
+      <td>0.2933</td>
+      <td>0.3082</td>
+      <td>0.3379</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>0.1398</td>
+      <td>0.1617</td>
+      <td>0.2497</td>
+      <td>0.2808</td>
+      <td>0.3042</td>
+      <td>0.3709</td>
+      <td>0.3564</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>0.1616</td>
+      <td>0.2264</td>
+      <td>0.2349</td>
+      <td>0.2998</td>
+      <td>0.3057</td>
+      <td>0.3010</td>
+      <td>0.2750</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>0.2532</td>
+      <td>0.2763</td>
+      <td>0.2999</td>
+      <td>0.3034</td>
+      <td>0.3692</td>
+      <td>0.4418</td>
+      <td>0.4310</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="normalidad-de-residuos">
+<h1><strong>Normalidad de residuos</strong><a class="headerlink" href="#normalidad-de-residuos" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">normality_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">lag</span><span class="p">,</span> <span class="n">residuals</span> <span class="ow">in</span> <span class="n">residuals_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">residuals</span><span class="p">[:,</span> <span class="n">h</span><span class="p">]</span>
+        <span class="n">stat_dag</span><span class="p">,</span> <span class="n">p_dag</span> <span class="o">=</span> <span class="n">normaltest</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="n">stat_shap</span><span class="p">,</span> <span class="n">p_shap</span> <span class="o">=</span> <span class="n">shapiro</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="n">normality_results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s2">&quot;Lag&quot;</span><span class="p">:</span> <span class="n">lag</span><span class="p">,</span>
+            <span class="s2">&quot;Horizonte&quot;</span><span class="p">:</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;D’Agostino p&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">p_dag</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="s2">&quot;Shapiro p&quot;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">p_shap</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="p">})</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">normality_results</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Lag</th>
+      <th>Horizonte</th>
+      <th>D’Agostino p</th>
+      <th>Shapiro p</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>7</td>
+      <td>1</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>7</td>
+      <td>2</td>
+      <td>0.0028</td>
+      <td>0.0002</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7</td>
+      <td>3</td>
+      <td>0.0390</td>
+      <td>0.0264</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7</td>
+      <td>4</td>
+      <td>0.5399</td>
+      <td>0.5476</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>7</td>
+      <td>5</td>
+      <td>0.0000</td>
+      <td>0.0002</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>6</td>
+      <td>0.4163</td>
+      <td>0.7272</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>7</td>
+      <td>0.2818</td>
+      <td>0.6348</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>14</td>
+      <td>1</td>
+      <td>0.0417</td>
+      <td>0.0638</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>14</td>
+      <td>2</td>
+      <td>0.1581</td>
+      <td>0.3667</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>14</td>
+      <td>3</td>
+      <td>0.0941</td>
+      <td>0.4064</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>14</td>
+      <td>4</td>
+      <td>0.1003</td>
+      <td>0.1103</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>14</td>
+      <td>5</td>
+      <td>0.8504</td>
+      <td>0.9401</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>14</td>
+      <td>6</td>
+      <td>0.5650</td>
+      <td>0.9292</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>14</td>
+      <td>7</td>
+      <td>0.5515</td>
+      <td>0.5819</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>21</td>
+      <td>1</td>
+      <td>0.8308</td>
+      <td>0.7276</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>21</td>
+      <td>2</td>
+      <td>0.7617</td>
+      <td>0.9349</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>21</td>
+      <td>3</td>
+      <td>0.9944</td>
+      <td>0.7114</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>21</td>
+      <td>4</td>
+      <td>0.7435</td>
+      <td>0.6347</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>21</td>
+      <td>5</td>
+      <td>0.4883</td>
+      <td>0.5682</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>21</td>
+      <td>6</td>
+      <td>0.2422</td>
+      <td>0.1424</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>21</td>
+      <td>7</td>
+      <td>0.3552</td>
+      <td>0.2406</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>28</td>
+      <td>1</td>
+      <td>0.0043</td>
+      <td>0.0120</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>28</td>
+      <td>2</td>
+      <td>0.0484</td>
+      <td>0.1547</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>28</td>
+      <td>3</td>
+      <td>0.4262</td>
+      <td>0.1620</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>28</td>
+      <td>4</td>
+      <td>0.3914</td>
+      <td>0.1678</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>28</td>
+      <td>5</td>
+      <td>0.6157</td>
+      <td>0.6158</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>28</td>
+      <td>6</td>
+      <td>0.7554</td>
+      <td>0.2488</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>28</td>
+      <td>7</td>
+      <td>0.0574</td>
+      <td>0.0470</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>El objetivo de esta prueba es determinar si los errores (<strong>residuos</strong>) del modelo siguen una distribución normal. Un <strong>p-valor alto (&gt; 0.05)</strong> indica que los residuos no difieren significativamente de la normalidad, lo cual es deseable porque implica que el modelo ha capturado de forma adecuada la naturaleza estocástica de los datos.</p>
+<section id="modelos-de-14-y-21-dias-residuos-estadisticamente-robustos">
+<h2>Modelos de 14 y 21 Días — Residuos Estadísticamente Robustos<a class="headerlink" href="#modelos-de-14-y-21-dias-residuos-estadisticamente-robustos" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Modelo de 21 días (Mejor Comportamiento Diagnóstico):</strong></p>
+<ul>
+<li><p>Supera la prueba de normalidad en todos los horizontes.</p></li>
+<li><p>Sus residuos presentan p-valores consistentemente altos.</p></li>
+<li><p>Los errores se asemejan a una distribución gaussiana bien definida.</p></li>
+</ul>
+</li>
+<li><p><strong>Modelo de 14 días (Excelente Comportamiento):</strong></p>
+<ul>
+<li><p>Residuos normales en casi todos los horizontes.</p></li>
+<li><p>Únicamente muestra un resultado limítrofe en el <strong>horizonte de 1 día</strong>.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="modelos-de-7-y-28-dias-residuos-no-normales">
+<h2>Modelos de 7 y 28 Días — Residuos No Normales<a class="headerlink" href="#modelos-de-7-y-28-dias-residuos-no-normales" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Modelo de 7 días:</strong></p>
+<ul>
+<li><p>Aunque es el más preciso en términos de <strong>RMSE</strong>, falla la prueba de normalidad en los horizontes <strong>1, 2, 3 y 5 días</strong>.</p></li>
+<li><p>Sus p-valores son prácticamente cero, lo que indica residuos con distribución no normal.</p></li>
+</ul>
+</li>
+<li><p><strong>Modelo de 28 días:</strong></p>
+<ul>
+<li><p>Presenta problemas en el <strong>horizonte 1</strong>.</p></li>
+<li><p>En el horizonte 7 falla específicamente la prueba de <strong>Shapiro-Wilk</strong>, confirmando que sus residuos no son normales.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="sintesis-precision-vs-normalidad">
+<h2>Síntesis: Precisión vs. Normalidad<a class="headerlink" href="#sintesis-precision-vs-normalidad" title="Link to this heading">#</a></h2>
+<p>Estos resultados ponen de manifiesto un <strong>compromiso clásico en series temporales financieras</strong>:</p>
+<ul class="simple">
+<li><p><strong>Modelo de 7 días → Máxima precisión predictiva (menor RMSE):</strong></p>
+<ul>
+<li><p>Captura de manera más fiel la magnitud de la volatilidad.</p></li>
+<li><p>Sin embargo, al enfrentarse a eventos extremos (colas pesadas), los residuos resultan <strong>no normales</strong>.</p></li>
+</ul>
+</li>
+<li><p><strong>Modelo de 21 días → Menor precisión, mayor normalidad:</strong></p>
+<ul>
+<li><p>Sus predicciones son excesivamente suavizadas.</p></li>
+<li><p>Este efecto de suavizado hace que los residuos se acerquen más a una <strong>distribución normal</strong>, aunque con menor poder predictivo.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="acf">
+<h1><strong>ACF</strong><a class="headerlink" href="#acf" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">lag</span><span class="p">,</span> <span class="n">residuals</span> <span class="ow">in</span> <span class="n">residuals_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">plot_acf</span><span class="p">(</span><span class="n">residuals</span><span class="p">[:,</span> <span class="n">h</span><span class="p">],</span> <span class="n">lags</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ACF - Lag </span><span class="si">{</span><span class="n">lag</span><span class="si">}</span><span class="s2">, Horizonte </span><span class="si">{</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/cc3311f46d8c9288e8442149446c2fa0bc91f798c4a0fad82227695b29c18646.png" src="_images/cc3311f46d8c9288e8442149446c2fa0bc91f798c4a0fad82227695b29c18646.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/10e8080ef93e5bf083764265cc2025068a33289016d52f686ca015d51ff34d73.png" src="_images/10e8080ef93e5bf083764265cc2025068a33289016d52f686ca015d51ff34d73.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/3c04ec79cbc500d66797eec1dc48fe18e717032261533d7a434d7f9ce0f08644.png" src="_images/3c04ec79cbc500d66797eec1dc48fe18e717032261533d7a434d7f9ce0f08644.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/060f0ce767fd4ed1ab2f0879bd7c14bd0fdc44e4027711a760c7bb99658501fc.png" src="_images/060f0ce767fd4ed1ab2f0879bd7c14bd0fdc44e4027711a760c7bb99658501fc.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/f974bf4ece273f07492b153906eae429b0d93cc2949902a84ccc69091ccd88e0.png" src="_images/f974bf4ece273f07492b153906eae429b0d93cc2949902a84ccc69091ccd88e0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/a4eb2b4340d83ed1a82f6b196725dce62cf8b3dafdf5daba4427c8a0b2dd69b9.png" src="_images/a4eb2b4340d83ed1a82f6b196725dce62cf8b3dafdf5daba4427c8a0b2dd69b9.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/9f5d63d42aeaefa09339b226ac62b114585949b68741cbfa5dfbf522b37954ef.png" src="_images/9f5d63d42aeaefa09339b226ac62b114585949b68741cbfa5dfbf522b37954ef.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/d83e3ebd1313ee3512b70512218820f466dbf32bebf37a2532cd17cd7e22d1f1.png" src="_images/d83e3ebd1313ee3512b70512218820f466dbf32bebf37a2532cd17cd7e22d1f1.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/1644b079189a266cb1236ebbad574adc88e13181958307b5bc3fbfab7e32f03b.png" src="_images/1644b079189a266cb1236ebbad574adc88e13181958307b5bc3fbfab7e32f03b.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/689dd2b1ec6d0db37ff2b0efd37398b3a06ccccb00bfbfde62da658446327233.png" src="_images/689dd2b1ec6d0db37ff2b0efd37398b3a06ccccb00bfbfde62da658446327233.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/5f292d9617579e35169db7af4d4b062842c4799c97c365f9411dfb84715d38a2.png" src="_images/5f292d9617579e35169db7af4d4b062842c4799c97c365f9411dfb84715d38a2.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/1e35336b961454da2274841780d6f7cecf5e079193ab0dc202ee84917e7d031f.png" src="_images/1e35336b961454da2274841780d6f7cecf5e079193ab0dc202ee84917e7d031f.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/d0d8eaefcd2237d421fc94b28949c6d62594a98213077d5412f7cb59f2a41c72.png" src="_images/d0d8eaefcd2237d421fc94b28949c6d62594a98213077d5412f7cb59f2a41c72.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/6a10991e7abed01d7d5cf06b5baff2bd5cb0c617fae6dac9f300621d5e638697.png" src="_images/6a10991e7abed01d7d5cf06b5baff2bd5cb0c617fae6dac9f300621d5e638697.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/9ffa206a7265c0e8b9438a4d558ad91ede462b47b455d0e8b9df595b98b8d505.png" src="_images/9ffa206a7265c0e8b9438a4d558ad91ede462b47b455d0e8b9df595b98b8d505.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/9017d82275862dd34aaf984b72c73a4373b72ac9f24fde292576729d0a44bb5a.png" src="_images/9017d82275862dd34aaf984b72c73a4373b72ac9f24fde292576729d0a44bb5a.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/1d9b9999327116af9a60a5462610d52f7e158884af4d99550302b6feb2500abb.png" src="_images/1d9b9999327116af9a60a5462610d52f7e158884af4d99550302b6feb2500abb.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/336c3607b9f47630c667dc58372ac3f01f945f48e295d9ab73b01484297d493e.png" src="_images/336c3607b9f47630c667dc58372ac3f01f945f48e295d9ab73b01484297d493e.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/f17416794db1d9e0a5cfcab2983e95c319fe10da732428c4c498f50c975be07d.png" src="_images/f17416794db1d9e0a5cfcab2983e95c319fe10da732428c4c498f50c975be07d.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/6661bc82164d7d5de47b923ec5afd07db866bf057fcde1f517bef0f915bd11ed.png" src="_images/6661bc82164d7d5de47b923ec5afd07db866bf057fcde1f517bef0f915bd11ed.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/d82861bab24c71716385c0259e8d4fa1d6b6ffdb073682d73c22c38ed56d5a6c.png" src="_images/d82861bab24c71716385c0259e8d4fa1d6b6ffdb073682d73c22c38ed56d5a6c.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/7b877fd7c6e7f838702d7f386c50dea31900d753e01c6a5b18974470c943ceaf.png" src="_images/7b877fd7c6e7f838702d7f386c50dea31900d753e01c6a5b18974470c943ceaf.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/8eb0caaab493adb54b179aef83b669519c934cd01985bda9eebb1e01b448f57a.png" src="_images/8eb0caaab493adb54b179aef83b669519c934cd01985bda9eebb1e01b448f57a.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/8792873669ac61f75a85a8d05705474386dfba0821ed3225954a0065eb635295.png" src="_images/8792873669ac61f75a85a8d05705474386dfba0821ed3225954a0065eb635295.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/00b989f051daa1ced088c02045f512dcadd2d0beac31f77e96c2f1c08e1cf69a.png" src="_images/00b989f051daa1ced088c02045f512dcadd2d0beac31f77e96c2f1c08e1cf69a.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/27de8337ef42c9214949db87b0057c40fd8473564c3f6b3de2281ec670c30624.png" src="_images/27de8337ef42c9214949db87b0057c40fd8473564c3f6b3de2281ec670c30624.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/26bc6d91fcb49319bc031ba3c32c46b02d3eddaadb25880c1fc7dcac1619d501.png" src="_images/26bc6d91fcb49319bc031ba3c32c46b02d3eddaadb25880c1fc7dcac1619d501.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 600x300 with 0 Axes&gt;
+</pre></div>
+</div>
+<img alt="_images/e23b2f21579741680b711124530180ce03e6505b7d1b7a600f30f99d51e984bc.png" src="_images/e23b2f21579741680b711124530180ce03e6505b7d1b7a600f30f99d51e984bc.png" />
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_training_model.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>Librerías</strong></p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#"><strong>Diagnóstico de los Residuos por Horizonte de Pronóstico</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-7-y-14-dias-buen-comportamiento">Modelos de 7 y 14 Días — Buen Comportamiento</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-21-y-28-dias-rendimiento-inferior">Modelos de 21 y 28 Días — Rendimiento Inferior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion-general">Conclusión General</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#normalidad-de-residuos"><strong>Normalidad de residuos</strong></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-14-y-21-dias-residuos-estadisticamente-robustos">Modelos de 14 y 21 Días — Residuos Estadísticamente Robustos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-7-y-28-dias-residuos-no-normales">Modelos de 7 y 28 Días — Residuos No Normales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sintesis-precision-vs-normalidad">Síntesis: Precisión vs. Normalidad</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#acf"><strong>ACF</strong></a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Sara Guerra
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
