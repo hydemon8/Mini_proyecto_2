@@ -45,7 +45,7 @@ Tras entrenar y evaluar los cuatro modelos, el **modelo que utiliza un lag de 7 
 
 A continuación, se muestra un ejemplo de su capacidad predictiva en uno de los folds de validación:
 
-![Lag 7 mejor fold 2](serie_temporal_lag7_Mejor_Fold_Fold_2.png)
+![Lag 7 mejor fold 2](img/serie_temporal_lag7_Mejor_Fold_Fold_2.png)
 
 
 ---
